@@ -1,0 +1,9 @@
+C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\GUI Project\GUI Project\bin\Debug\GUI Project.exe.config
+C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\GUI Project\GUI Project\bin\Debug\GUI Project.exe
+C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\GUI Project\GUI Project\bin\Debug\GUI Project.pdb
+C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\GUI Project\GUI Project\obj\Debug\GUI Project.csprojResolveAssemblyReference.cache
+C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\GUI Project\GUI Project\obj\Debug\GUI_Project.MainGui.resources
+C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\GUI Project\GUI Project\obj\Debug\GUI_Project.Properties.Resources.resources
+C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\GUI Project\GUI Project\obj\Debug\GUI Project.csproj.GenerateResource.Cache
+C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\GUI Project\GUI Project\obj\Debug\GUI Project.exe
+C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\GUI Project\GUI Project\obj\Debug\GUI Project.pdb
