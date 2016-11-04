@@ -24,21 +24,36 @@
 using namespace std;
 using namespace cv;
 
+struct EuclideanDistanceFunctor
+{
+    int _dist2;
+    EuclideanDistanceFunctor(int dist) : _dist2(dist*dist) {}
+
+    bool operator()(const Point& lhs, const Point& rhs) const
+    {
+        return ((lhs.x - rhs.x)*(lhs.x - rhs.x) + (lhs.y - rhs.y)*(lhs.y - rhs.y)) < _dist2;
+    }
+};
+
 int main( int argc, const char** argv )
 {
 	try{
 	 VideoCapture cap("C:/Users/Angelo/Documents/MATLAB/PianoRollVid.avi"); // open the video file for reading
-	   //cap.set(CV_CAP_PROP_POS_MSEC, 300); //start the video at 300ms
+	   cap.set(CV_CAP_PROP_POS_MSEC, 2500); //start the video at 300ms
 
     double fps = cap.get(CV_CAP_PROP_FPS); //get the frames per seconds of the video
 
      cout << "Frame per seconds : " << fps << endl;
 
     namedWindow("MyVideo",CV_WINDOW_AUTOSIZE); //create a window called "MyVideo"
+	//Define coordinates for box to look for pixels
 	int subFrameXCoord = 45; 
 	int subFrameYCoord = 300; 
 	int subFrameWidth = 1014; 
 	int subFrameHeight = 13;
+	// Define the distance between clusters
+    int euclidean_distance = 4;
+
     while(1)
     {
         Mat frame;
@@ -53,62 +68,107 @@ int main( int argc, const char** argv )
         }
 
         imshow("MyVideo", frame); //show the frame in "MyVideo" window
-		Mat edge,draw,subFrame,noZeroCoords;
-		
+		Mat edge,draw,subFrame;//,noZeroCoords;
+		vector<Point> noZeroCoords;
 		
 		subFrame = frame(Rect(subFrameXCoord,subFrameYCoord,subFrameWidth,subFrameHeight)); //best range for this video 
 
 		Canny(subFrame,edge,50,150,3);
-		findNonZero(edge,noZeroCoords);
-		int i = 0;
-		int j = 0;
-		int arrInd = 0;/*
-		while(i < subFrameWidth){
-			for(j = 0; j < 12; j++){
-
-			}
-			if((12*arrInd + subFrameXCoord)){
-
-			}
-			arrInd++;
-		}*/
-		int pixCountCurrRange = 0; //Pixel count for the nth note where n is arrInd
-		int tempMin = 999;
-		for (int i = 0; i < noZeroCoords.total(); i++ ) {
-			cout << "Zero#" << i << ": " << noZeroCoords.at<Point>(i).x + subFrameXCoord << ", " << noZeroCoords.at<Point>(i).y + subFrameYCoord << endl;
-			if(noZeroCoords.at<Point>(i).x < tempMin){
-				tempMin = noZeroCoords.at<Point>(i).x;
-				pixCountCurrRange = i;
-			}
-			/*if(((noZeroCoords.at<Point>(i).x + subFrameXCoord) >= 12*arrInd)&&((noZeroCoords.at<Point>(i).x + subFrameXCoord) <= 12*(arrInd+1))){
-				pixCountCurrRange++;
-			}
-			if(pixCountCurrRange >= 3){
-				outputNoteVec[arrInd] = 1;
-				arrInd++;
-				pixCountCurrRange = 0;
-
-			}
+		int countNon0 = countNonZero(edge);
+		if(countNon0 == 0){
+		//Output empty array
+		cout << "fail" << endl;
 		}
-		//cout << noZeroCoords+45 << endl; //Need to figure out how to add vertical offset
-		for(int i = 0; i < outputNoteVec.size(); i++){
-			cout << outputNoteVec[i] << " ";*/
+		else{
+			findNonZero(edge,noZeroCoords);
+		vector<int> labels;
+
+    // With functor
+    int n_labels = partition(noZeroCoords, labels, EuclideanDistanceFunctor(euclidean_distance));
+
+    // With lambda function
+    //int th2 = euclidean_distance * euclidean_distance;
+    //int n_labels = partition(noZeroCoords, labels, [th2](const Point& lhs, const Point& rhs) {
+    //    return ((lhs.x - rhs.x)*(lhs.x - rhs.x) + (lhs.y - rhs.y)*(lhs.y - rhs.y)) < th2;
+  //  });
+
+
+    // Store all points in same cluster, and compute centroids
+    vector<vector<Point>> clusters(n_labels);
+    vector<Point> centroids(n_labels, Point(0,0));
+
+    for (int i = 0; i < noZeroCoords.size(); ++i)
+    {
+        clusters[labels[i]].push_back(noZeroCoords[i]);
+        centroids[labels[i]] += noZeroCoords[i];
+    }
+    for (int i = 0; i < n_labels; ++i)
+    {
+        centroids[i].x /= clusters[i].size();
+		//cout << centroids[i].x + subFrameXCoord << endl;
+        centroids[i].y /= clusters[i].size();
+    }
+
+	//Loop through centroids and see where they fall
+	int vectCtr = 0;
+	for (int i = 0; i < 84; ++i)
+    {
+		//I think vectCtr is getting too big
+		if(vectCtr < n_labels){
+			if((centroids[vectCtr].x + subFrameXCoord < 12*(i+1)) && (centroids[vectCtr].x + subFrameXCoord > 12*i)){
+				vectCtr++;
+				outputNoteVec[i] = 1;
+			}
+			else
+				outputNoteVec[i] = 0;
+        
 		}
-		cout << tempMin << " " << pixCountCurrRange << endl;
-		edge.convertTo(draw, CV_8U);
-		
-		
-//		circle(frame,Point(noZeroCoords.at<Point>(1).x,noZeroCoords.at<Point>(1).y),2,Scalar(0));
-		 namedWindow("image", CV_WINDOW_AUTOSIZE);
-		 imshow("image", draw);
-		 fill(outputNoteVec.begin(),outputNoteVec.end(),0);
-        if(waitKey(30) == 27) //wait for 'esc' key press for 30 ms. If 'esc' key is pressed, break loop
+	}
+    // Draw results
+
+    // Build a vector of random color, one for each class (label)
+    vector<Vec3b> colors;
+    for (int i = 0; i < n_labels; ++i)
+    {
+        colors.push_back(Vec3b(rand() & 255, rand() & 255, rand() & 255));
+    }
+
+    // Draw the points
+    Mat3b res(frame.rows, frame.cols, Vec3b(0, 0, 0));
+    for (int i = 0; i < noZeroCoords.size(); ++i)
+    {
+        res(noZeroCoords[i]) = colors[labels[i]];
+    }
+
+    // Draw centroids
+    for (int i = 0; i < n_labels; ++i)
+    {
+        circle(res, centroids[i], 3, Scalar(colors[i][0], colors[i][1], colors[i][2]), CV_FILLED);
+        circle(res, centroids[i], 6, Scalar(255 - colors[i][0], 255 - colors[i][1], 255 - colors[i][2]));
+    }
+
+
+    imshow("Clusters", res);
+	for(int i = 0; i < 88; i++){
+		cout << outputNoteVec[i] << " ";
+		}
+	cout << endl;
+	if(waitKey(30) == 27) //wait for 'esc' key press for 30 ms. If 'esc' key is pressed, break loop
        {
                 cout << "esc key is pressed by user" << endl; 
                 break; 
        }
-    }
+		
+	}/*
+		cout << tempMin << " " << pixCountCurrRange << endl;
+		edge.convertTo(draw, CV_8U);
 
+		 namedWindow("image", CV_WINDOW_AUTOSIZE);
+		 imshow("image", draw);
+		 fill(outputNoteVec.begin(),outputNoteVec.end(),0);
+    }
+	*/
+		}
     return 0;
 	}
 
