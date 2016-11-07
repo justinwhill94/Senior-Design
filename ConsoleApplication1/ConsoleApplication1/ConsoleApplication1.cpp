@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 
 using namespace std;
 using namespace cv;
@@ -37,14 +38,18 @@ struct EuclideanDistanceFunctor
 
 int main( int argc, const char** argv )
 {
-	try{
-	 VideoCapture cap("C:/Users/Angelo/Documents/MATLAB/PianoRollVid.avi"); // open the video file for reading
-	   cap.set(CV_CAP_PROP_POS_MSEC, 2500); //start the video at 300ms
 
+	try{
+		string filePath = argv[1];
+		cout << filePath << endl;
+		VideoCapture cap(filePath); // open the video file for reading
+	// VideoCapture cap("C:/Users/Angelo/Documents/MATLAB/PianoRollVid.avi"); // open the video file for reading
+	   cap.set(CV_CAP_PROP_POS_MSEC, 0); //start the video at 300ms
+	   double numFrames = cap.get(CV_CAP_PROP_FRAME_COUNT);
     double fps = cap.get(CV_CAP_PROP_FPS); //get the frames per seconds of the video
 
-     cout << "Frame per seconds : " << fps << endl;
-
+     //cout << "Frame per seconds : " << fps << endl;
+	 //cout << "Number of frames : " << numFrames << endl;
     namedWindow("MyVideo",CV_WINDOW_AUTOSIZE); //create a window called "MyVideo"
 	//Define coordinates for box to look for pixels
 	int subFrameXCoord = 45; 
@@ -53,7 +58,7 @@ int main( int argc, const char** argv )
 	int subFrameHeight = 13;
 	// Define the distance between clusters
     int euclidean_distance = 4;
-
+	ofstream noteFile("temporaryOutputFileForReading.txt");
     while(1)
     {
         Mat frame;
@@ -63,7 +68,7 @@ int main( int argc, const char** argv )
 
          if (!bSuccess) //if not success, break loop
         {
-                        cout << "Cannot read the frame from video file" << endl;
+                       //cout << "Cannot read the frame from video file" << endl;
                        break;
         }
 
@@ -76,8 +81,11 @@ int main( int argc, const char** argv )
 		Canny(subFrame,edge,50,150,3);
 		int countNon0 = countNonZero(edge);
 		if(countNon0 == 0){
-		//Output empty array
-		cout << "fail" << endl;
+			//Output empty array
+			//cout << "fail" << endl;
+			for(int i = 0; i < 88; i++){
+				noteFile << outputNoteVec[i] << " ";
+			}
 		}
 		else{
 			findNonZero(edge,noZeroCoords);
@@ -150,12 +158,12 @@ int main( int argc, const char** argv )
 
     imshow("Clusters", res);
 	for(int i = 0; i < 88; i++){
-		cout << outputNoteVec[i] << " ";
+		noteFile << outputNoteVec[i] << " ";
 		}
-	cout << endl;
+	noteFile << endl;
 	if(waitKey(30) == 27) //wait for 'esc' key press for 30 ms. If 'esc' key is pressed, break loop
        {
-                cout << "esc key is pressed by user" << endl; 
+                //cout << "esc key is pressed by user" << endl; 
                 break; 
        }
 		

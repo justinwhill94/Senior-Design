@@ -1,16 +1,13 @@
-﻿Build started 9/25/2016 2:56:47 PM.
-     1>Project "C:\Users\Angelo\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /IC:\opencv\build\\include /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"x64\Release\ConsoleApplication1.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc110.pdb" /Gd /TP /errorReport:prompt stdafx.cpp
-         stdafx.cpp
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /IC:\opencv\build\\include /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"x64\Release\ConsoleApplication1.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc110.pdb" /Gd /TP /errorReport:prompt ConsoleApplication1.cpp
-         ConsoleApplication1.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Angelo\Documents\Visual Studio 2012\Projects\ConsoleApplication1\x64\Release\ConsoleApplication1.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\opencv\build\\x86\vc11\lib opencv_calib3d2413d.lib opencv_contrib2413d.lib opencv_core2413d.lib opencv_features2d2413d.lib opencv_flann2413d.lib opencv_gpu2413d.lib opencv_haartraining_engined.lib opencv_highgui2413d.lib opencv_imgproc2413d.lib opencv_legacy2413d.lib opencv_ml2413d.lib opencv_nonfree2413d.lib opencv_objdetect2413d.lib opencv_photo2413d.lib opencv_stitching2413d.lib opencv_superres2413d.lib opencv_ts2413d.lib opencv_video2413d.lib opencv_videostab2413d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Angelo\Documents\Visual Studio 2012\Projects\ConsoleApplication1\x64\Release\ConsoleApplication1.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Angelo\Documents\Visual Studio 2012\Projects\ConsoleApplication1\x64\Release\ConsoleApplication1.lib" /MACHINE:X64 x64\Release\ConsoleApplication1.obj
+﻿Build started 11/6/2016 7:21:09 PM.
+     1>Project "C:\Users\Angelo\Documents\gitStuff\Senior-Design\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Angelo\Documents\gitStuff\Senior-Design\ConsoleApplication1\x64\Release\ConsoleApplication1.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\opencv\build\\x64\vc11\lib opencv_calib3d2413.lib opencv_contrib2413.lib opencv_core2413.lib opencv_features2d2413.lib opencv_flann2413.lib opencv_gpu2413.lib opencv_highgui2413.lib opencv_imgproc2413.lib opencv_legacy2413.lib opencv_ml2413.lib opencv_nonfree2413.lib opencv_objdetect2413.lib opencv_photo2413.lib opencv_stitching2413.lib opencv_superres2413.lib opencv_ts2413.lib opencv_video2413.lib opencv_videostab2413.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Angelo\Documents\gitStuff\Senior-Design\ConsoleApplication1\x64\Release\ConsoleApplication1.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Angelo\Documents\gitStuff\Senior-Design\ConsoleApplication1\x64\Release\ConsoleApplication1.lib" /MACHINE:X64 x64\Release\ConsoleApplication1.obj
          x64\Release\stdafx.obj
-     1>LINK : fatal error LNK1181: cannot open input file 'opencv_haartraining_engined.lib'
-     1>Done Building Project "C:\Users\Angelo\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj" (Build target(s)) -- FAILED.
+         Generating code
+         Finished generating code
+         ConsoleApplication1.vcxproj -> C:\Users\Angelo\Documents\gitStuff\Senior-Design\ConsoleApplication1\x64\Release\ConsoleApplication1.exe
+     1>Done Building Project "C:\Users\Angelo\Documents\gitStuff\Senior-Design\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:01.44
+Time Elapsed 00:00:01.67
