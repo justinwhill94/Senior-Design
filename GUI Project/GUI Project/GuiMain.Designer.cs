@@ -62,6 +62,7 @@
             this.NextButton.TabIndex = 2;
             this.NextButton.Text = "Run";
             this.NextButton.UseVisualStyleBackColor = true;
+            this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
             // 
             // MainUIPanel
             // 

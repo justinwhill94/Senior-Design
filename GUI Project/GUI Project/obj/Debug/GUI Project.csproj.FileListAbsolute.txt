@@ -34,3 +34,12 @@ C:\Users\Matthew\Desktop\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI
 C:\Users\Matthew\Desktop\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI_Project.MainGui.resources
 C:\Users\Matthew\Desktop\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI_Project.Properties.Resources.resources
 C:\Users\Matthew\Desktop\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI Project.csproj.GenerateResource.Cache
+C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\bin\Debug\GUI Project.exe.config
+C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI Project.exe
+C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI Project.pdb
+C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\bin\Debug\GUI Project.exe
+C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\bin\Debug\GUI Project.pdb
+C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI Project.csprojResolveAssemblyReference.cache
+C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI_Project.MainGui.resources
+C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI_Project.Properties.Resources.resources
+C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\obj\Debug\GUI Project.csproj.GenerateResource.Cache

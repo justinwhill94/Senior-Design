@@ -8,48 +8,59 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Runtime.InteropServices; 
 
 namespace GUI_Project
 {
+    
+    
     public partial class MainGui : Form
     {
+        
+        //[DllImport("C:\\Users\\Matthew\\Desktop\\UK\\Fall 2016\\Senior-Design-GUI\\GUI Project\\GUI Project\\CV\\ConsoleApplication1.dll",  CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        //public static extern void CVmain(string filePath);
+       //[DllImport("C:\\Users\\Matthew\\Desktop\\TestLibrary.dll",  CallingConvention = CallingConvention.Cdecl)]
+       // public static extern double TEST_Add(double a, double b);
+        static void LaunchCommandLineApp(string file_path)
+        {
+            
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = false;
+            startInfo.UseShellExecute = false;
+            startInfo.FileName = "C:\\CV_test\\ConsoleApplication1.exe";
+            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.Arguments = file_path;
+            try
+            {
+                
+                // Start the process with the info we specified.
+                // Call WaitForExit and then the using statement will close.
+                using (Process exeProcess = Process.Start(startInfo))
+                {
+                    exeProcess.WaitForExit();
+                }
+            }
+            catch
+            {
+                // Log error.
+                int x = 2;
+            }
+        }
         public MainGui()
         {
+            
             InitializeComponent();
             MainUIPanel.Visible = true;
         }
         List<string> SourceFileNames = new List<string>();
         string DestFileName;
-       /* private void NextButton_Click(object sender, EventArgs e)
-        {
-            if (panel1.Visible == true)
-            {
-                panel1.Visible = false;
-                panel2.Visible = true;
-                NextButton.Enabled = false;
-            }
-            else if (panel2.Visible == true)
-            {
-                panel2.Visible = false;
-                panel3.Visible = true;
-                WithPlay.Select();
-            }
-            else if (panel3.Visible == true)
-            {
-                panel3.Visible = false;
-                NextButton.Visible = false;
-                var Proc = Process.Start(FileName);
-                panel4.Visible = true;
-                CloseButton.Visible = true;
-            } 
-            
-        }*/
+       
         private void Search_Click(object sender, EventArgs e)
         {
             //Need to specify which files can be chosen
             OpenFileDialog OpenFile = new OpenFileDialog();
             OpenFile.Multiselect = true;
-            OpenFile.Filter = "Videos (*.mp4) | *.mp4|" + "All files (*.*)|*.*";
+            OpenFile.Filter = "Videos (*.avi) | *.avi|" + "All files (*.*)|*.*";
             OpenFile.ShowDialog();
            
             
@@ -68,6 +79,7 @@ namespace GUI_Project
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
             OpenFileDialog OpenFile = new OpenFileDialog();
             OpenFile.Multiselect = true;
             OpenFile.ShowDialog();
@@ -76,6 +88,15 @@ namespace GUI_Project
                 UserDestFilePath.Text = OpenFile.FileName;
                 DestFileName = OpenFile.FileName;
             }
+
+        }
+
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+          //  CVmain(SourceFileNames[0]);
+         //  double a =  TEST_Add(1.0, 2.0);
+            LaunchCommandLineApp(SourceFileNames[0]);
+
         }
 
     }
