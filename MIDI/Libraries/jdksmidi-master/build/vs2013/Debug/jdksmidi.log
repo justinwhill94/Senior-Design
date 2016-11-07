@@ -1,0 +1,33 @@
+﻿  jdksmidi_track.cpp
+  jdksmidi_tick.cpp
+  jdksmidi_tempo.cpp
+  jdksmidi_sysex.cpp
+  jdksmidi_smpte.cpp
+  jdksmidi_showcontrolhandler.cpp
+  jdksmidi_showcontrol.cpp
+  jdksmidi_sequencer.cpp
+  jdksmidi_queue.cpp
+  jdksmidi_process.cpp
+  jdksmidi_parser.cpp
+  jdksmidi_multitrack.cpp
+  jdksmidi_msg.cpp
+  jdksmidi_midi.cpp
+  jdksmidi_matrix.cpp
+  jdksmidi_manager.cpp
+  jdksmidi_keysig.cpp
+  jdksmidi_filewritemultitrack.cpp
+  jdksmidi_filewrite.cpp
+  jdksmidi_fileshow.cpp
+  Generating Code...
+  Compiling...
+  jdksmidi_filereadmultitrack.cpp
+  jdksmidi_fileread.cpp
+  jdksmidi_file.cpp
+  jdksmidi_edittrack.cpp
+  jdksmidi_driverdump.cpp
+  jdksmidi_driver.cpp
+  jdksmidi_advancedsequencer.cpp
+  Generating Code...
+  jdksmidi_driverwin32.cpp
+jdksmidi_tempo.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  jdksmidi.vcxproj -> C:\Users\Joe\Documents\Visual Studio 2015\Libraries\jdksmidi-master\build\vs2013\.\Debug\jdksmidi.lib

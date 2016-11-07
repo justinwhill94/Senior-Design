@@ -1,0 +1,23 @@
+#!/bin/bash
+for i in $*; do
+ case $i in 
+  (--help) echo "Usage: --help --version --prefix --compiler-prefix --includes --defines --libs --cflags --cxxflags --cppflags --mflags --mmflags --cc --cxx --ldflags --share-dir " ;;
+  (--version) echo "libjdksmidi version 20121102 config tool. " ;;
+  (--prefix) echo -n "/mnt/c/Users/Joe/Documents/Visual\ Studio\ 2015/Libraries/jdksmidi-master/tmp-target/build " ;;
+  (--libs) echo -n "/mnt/c/Users/Joe/Documents/Visual\ Studio\ 2015/Libraries/jdksmidi-master/tmp-target/build/lib/libjdksmidi.a";;
+  (--defines) echo -n " ";;
+  (--includes) echo -n " ";;
+  (--cflags) echo -n " -Wall    -Wall  ";;
+  (--cxxflags) echo -n " -Wall    -Wall  ";;
+  (--cppflags) echo -n " ";;
+  (--mflags) echo -n "-w -Wall    -Wall  ";;
+  (--mmflags) echo -n " -Wall    -Wall  ";;
+  (--cc) echo -n "gcc ";;
+  (--cxx) echo -n "g++ ";;
+  (--ldflags) echo -n " ";;
+  (--compiler-prefix) echo -n "";;
+  (--share-dir) echo -n "/mnt/c/Users/Joe/Documents/Visual\ Studio\ 2015/Libraries/jdksmidi-master/share";;
+  (--share-dev-dir) echo -n "/mnt/c/Users/Joe/Documents/Visual\ Studio\ 2015/Libraries/jdksmidi-master/share-dev";;
+ esac
+done
+echo

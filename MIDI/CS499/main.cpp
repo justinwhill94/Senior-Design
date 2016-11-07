@@ -274,8 +274,8 @@ void display_notes(vector<MIDIClockTime> *note_array) {
 int main(int argc, char **argv)
 {
 	vector<MIDIClockTime> note_array[88];
-	note_array[63].push_back(300);
-	note_array[63].push_back(350);
+	note_array[62].push_back(300);
+	note_array[62].push_back(350);
 	note_array[67].push_back(100);
 	note_array[67].push_back(160);
 	display_notes(note_array);
