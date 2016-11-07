@@ -1,0 +1,45 @@
+@charset "utf-8";
+/* CSS Document */
+
+header {
+	/*background-color:#1143FF;*/
+	background-color:#ABABAB;
+	background-image:url(MeasuredSolutionsLogo.png);
+	background-repeat: no-repeat;
+	background-position:right;
+	background-size: 275px;
+	height: 135px;
+	padding-left:15px;
+	padding-top:15px;
+	margin-bottom: 0px;
+	color:#FFFFFF;
+	
+}
+h2 {
+	height: 15px;
+}
+h4 {
+/*	height: 5px;	*/
+padding-bottom: 5px;
+margin-bottom: 0px;
+}
+nav {
+	/*height: 25px;*/
+	padding-top: 5px;
+	padding-bottom: 5px;
+	
+	/*background-color:#1143FF;*/
+	background-color:#0018FF;
+	color:#FFFFFF;
+	border-style:ridge;
+	border-color:#D4D4D4;
+	border-left: hidden;
+}
+a {
+	width: 0px;	
+	padding: 5px;
+	border-style:ridge;
+	border-color:#D4D4D4;
+	color:#FFFFFF;
+	
+}
