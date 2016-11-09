@@ -1,0 +1,72 @@
+﻿Build started 11/9/2016 5:10:03 PM.
+     1>Project "C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\Libraries\jdksmidi-master\build\vs2013\jdksmidi.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\include /I"C:\Program Files\Microsoft Platform SDK\Include" /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _MBCS /D _LIB /GF /Gm- /EHsc /MTd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo".\Release/" /Fd".\Release/jdksmidi.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\src\jdksmidi_advancedsequencer.cpp ..\..\src\jdksmidi_driver.cpp ..\..\src\jdksmidi_driverdump.cpp ..\..\src\jdksmidi_edittrack.cpp ..\..\src\jdksmidi_file.cpp ..\..\src\jdksmidi_fileread.cpp ..\..\src\jdksmidi_filereadmultitrack.cpp ..\..\src\jdksmidi_fileshow.cpp ..\..\src\jdksmidi_filewrite.cpp ..\..\src\jdksmidi_filewritemultitrack.cpp ..\..\src\jdksmidi_keysig.cpp ..\..\src\jdksmidi_manager.cpp ..\..\src\jdksmidi_matrix.cpp ..\..\src\jdksmidi_midi.cpp ..\..\src\jdksmidi_msg.cpp ..\..\src\jdksmidi_multitrack.cpp ..\..\src\jdksmidi_parser.cpp ..\..\src\jdksmidi_process.cpp ..\..\src\jdksmidi_queue.cpp ..\..\src\jdksmidi_sequencer.cpp ..\..\src\jdksmidi_showcontrol.cpp ..\..\src\jdksmidi_showcontrolhandler.cpp ..\..\src\jdksmidi_smpte.cpp ..\..\src\jdksmidi_sysex.cpp ..\..\src\jdksmidi_tempo.cpp ..\..\src\jdksmidi_tick.cpp ..\..\src\jdksmidi_track.cpp
+         jdksmidi_advancedsequencer.cpp
+         jdksmidi_driver.cpp
+         jdksmidi_driverdump.cpp
+         jdksmidi_edittrack.cpp
+         jdksmidi_file.cpp
+         jdksmidi_fileread.cpp
+         jdksmidi_filereadmultitrack.cpp
+         jdksmidi_fileshow.cpp
+         jdksmidi_filewrite.cpp
+         jdksmidi_filewritemultitrack.cpp
+         jdksmidi_keysig.cpp
+         jdksmidi_manager.cpp
+         jdksmidi_matrix.cpp
+         jdksmidi_midi.cpp
+         jdksmidi_msg.cpp
+         jdksmidi_multitrack.cpp
+         jdksmidi_parser.cpp
+         jdksmidi_process.cpp
+         jdksmidi_queue.cpp
+         jdksmidi_sequencer.cpp
+         Generating Code...
+         Compiling...
+         jdksmidi_showcontrol.cpp
+         jdksmidi_showcontrolhandler.cpp
+         jdksmidi_smpte.cpp
+         jdksmidi_sysex.cpp
+         jdksmidi_tempo.cpp
+         jdksmidi_tick.cpp
+         jdksmidi_track.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\include /I"C:\Program Files\Microsoft Platform SDK\Include" /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D _CRT_SECURE_NO_DEPRECATE /D _MBCS /GF /Gm- /EHsc /MTd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo".\Release/" /Fd".\Release/jdksmidi.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\src\win32\jdksmidi_driverwin32.cpp
+         jdksmidi_driverwin32.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:".\Release\jdksmidi.lib" /NOLOGO .\Release/jdksmidi_advancedsequencer.obj
+         .\Release/jdksmidi_driver.obj
+         .\Release/jdksmidi_driverdump.obj
+         .\Release/jdksmidi_edittrack.obj
+         .\Release/jdksmidi_file.obj
+         .\Release/jdksmidi_fileread.obj
+         .\Release/jdksmidi_filereadmultitrack.obj
+         .\Release/jdksmidi_fileshow.obj
+         .\Release/jdksmidi_filewrite.obj
+         .\Release/jdksmidi_filewritemultitrack.obj
+         .\Release/jdksmidi_keysig.obj
+         .\Release/jdksmidi_manager.obj
+         .\Release/jdksmidi_matrix.obj
+         .\Release/jdksmidi_midi.obj
+         .\Release/jdksmidi_msg.obj
+         .\Release/jdksmidi_multitrack.obj
+         .\Release/jdksmidi_parser.obj
+         .\Release/jdksmidi_process.obj
+         .\Release/jdksmidi_queue.obj
+         .\Release/jdksmidi_sequencer.obj
+         .\Release/jdksmidi_showcontrol.obj
+         .\Release/jdksmidi_showcontrolhandler.obj
+         .\Release/jdksmidi_smpte.obj
+         .\Release/jdksmidi_sysex.obj
+         .\Release/jdksmidi_tempo.obj
+         .\Release/jdksmidi_tick.obj
+         .\Release/jdksmidi_track.obj
+         .\Release/jdksmidi_driverwin32.obj
+     1>jdksmidi_tempo.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+         jdksmidi.vcxproj -> C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\Libraries\jdksmidi-master\build\vs2013\.\Release\jdksmidi.lib
+     1>Done Building Project "C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\Libraries\jdksmidi-master\build\vs2013\jdksmidi.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:16.06
