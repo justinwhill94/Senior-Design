@@ -55,36 +55,52 @@ namespace GUI_Project
             InitializeComponent();
             MainUIPanel.Visible = true;
         }
-
+        //list of file paths, both source and destination
         List<string> SourceFileNames = new List<string>();
+        List<string> DestinationFileNames = new List<string>();
+        List<string> DestinationFilePaths = new List<string>();
         string DestFolderName;
+        //bools for remembering if a source/dest file were chosen  
         bool OpenPressed = false;
         bool SavePressed = false;
         
         private void Search_Click(object sender, EventArgs e)
         {
-            
+            //open up a dialog for choosing which files to open
             OpenFileDialog OpenFile = new OpenFileDialog();
             OpenFile.Multiselect = true;
-            OpenFile.Filter = "AVI Videos (*.avi) | *.avi";
+            //right now we only have support for avi, once we have a definte list of acceptable 
+            //file types, those can be added here
+            OpenFile.Filter = "AVI Videos (*.avi) | *.avi"; 
             OpenFile.ShowDialog();
            
-            
+            //only do something if the user actually chose a file
             if (OpenFile.FileName != "")
             {
+                //clear out any older files (just in case the user changed their mind and chose a different file)
                 SourceFileNames.Clear();
                 UserSourceFilePath.Text = "";
                 SourceFileNames = new List<string>();
+                //loop through each of the filenames the user chose and save them to the list of source files and generate
+                //the corresponding destination file
                 foreach(string file in OpenFile.FileNames)
                 {
                     UserSourceFilePath.Text += file + ";";
+                    //add the source file path to the list
                     SourceFileNames.Add(file);
+                    //set the destination file path to the same name, but with the midi file extension
+                    int begin = file.LastIndexOf('\\');
+                    int end = file.LastIndexOf('.');
+                    string dest_file = file.Substring(begin, end - begin + 1);
+                    dest_file += ".mid";
+                    DestinationFileNames.Add(dest_file);
                 }
                 OpenPressed = true;
                 
 
                 
             }
+           
         }
 
         private void DestOpenButton_Click(object sender, EventArgs e)
@@ -102,6 +118,7 @@ namespace GUI_Project
                 SavePressed = true;
             }
             */
+            //Open up the folder dialog, so the user can select where their new files will be stored
             FolderBrowserDialog saveDestDlg = new FolderBrowserDialog();
             if(saveDestDlg.ShowDialog() == DialogResult.OK)
             {
@@ -128,12 +145,27 @@ namespace GUI_Project
             }
             else
             {
+                foreach(string dest_file in DestinationFileNames)
+                {
+                    string dest_path = DestFolderName  + dest_file;
+                    DestinationFilePaths.Add(dest_path);
+
+                }
+                int index = 0;
                 foreach(string file in SourceFileNames)
                 {
                     LaunchCommandLineApp(file);
                     //The result of Angelo's code is now in a file called:______
-                    //Need to run Joe's code on each of the files that Angelo 
-                    //generates
+
+                    //Need to run MIDI code on each of the file that CV generates
+                    
+                    //Need to save the midi files as the corresponding DestinationFilePath
+
+                    //Probably need to add a case where the file already exists. 
+                    //We'll likely just append a '_1' or something to the end
+
+                    //increment the index so we know which DestinationFilePath to use
+                    index++;
                 }
                 
             }
@@ -154,6 +186,11 @@ namespace GUI_Project
                     videoWindow.axWindowsMediaPlayer1.settings.volume = 0;
                     //need to set Midilist to list of midi file paths
                     //videoWindow.MidiList
+                    //and set a bool in videoWindow to indicate that the file should be muted
+                    //and the midi file should be played instead
+                    //One possible solution for playing the midi file is to make an invisible media player
+                    //that will play the midi file (need to test if wmp can play a midi file) and use the first
+                    //player to play the video. Need to test that once we have some MIDI files to play with
                 }
                 videoWindow.ShowDialog();
             }

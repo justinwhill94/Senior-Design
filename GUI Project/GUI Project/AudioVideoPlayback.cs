@@ -7,18 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace GUI_Project
 {
     public partial class AudioVideoPlayback : Form
     {
-        
+        public bool use_midi_audio = false;
         public AudioVideoPlayback()
         {
             InitializeComponent();
             //axWindowsMediaPlayer1.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(axWindowsMediaPlayer1_PlayStateChange);
             axWindowsMediaPlayer1.uiMode = "none";
             axWindowsMediaPlayer1.enableContextMenu = false;
+            if(use_midi_audio)
+            {
+                axWindowsMediaPlayer1.settings.volume = 0;
+            }
             
         }
         private void axWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
