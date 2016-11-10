@@ -323,7 +323,7 @@ using namespace std;
 		int ChangeBuffer = 1;
 		while (getline(Infile, buf))
 		{
-			int CurrNote = 0;
+			int CurrNote = 2;
 			for (int i = 0; i < buf.length(); i++)
 			{
 				if (buf[i] == '0')

@@ -1,5 +1,5 @@
-﻿Build started 11/9/2016 11:05:19 PM.
-     1>Project "C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\CS499\CS499.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 11/9/2016 11:27:08 PM.
+     1>Project "C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\CS499\CS499.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /D _MBCS /D _CRT_SECURE_NO_WARNINGS /Gm- /EHsc /MTd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
@@ -8,11 +8,13 @@
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\Release\MidiConversion.exe" /NOLOGO /LIBPATH:"C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\\Libraries" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib jdksmidi.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\Release\MidiConversion.pdb" /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\Release\MidiConversion.lib" /MACHINE:X86 /SAFESEH Release\main.obj
          Generating code
-         All 594 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+         1 of 594 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+           0 functions were new in current compilation
+           0 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          CS499.vcxproj -> C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\Release\MidiConversion.exe
-     1>Done Building Project "C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\CS499\CS499.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\CS499\CS499.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.07
+Time Elapsed 00:00:04.70
