@@ -32,7 +32,9 @@
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             this.PlayButton = new System.Windows.Forms.Button();
             this.Pause = new System.Windows.Forms.Button();
+            this.axWindowsMediaPlayerMidi = new AxWMPLib.AxWindowsMediaPlayer();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayerMidi)).BeginInit();
             this.SuspendLayout();
             // 
             // axWindowsMediaPlayer1
@@ -65,17 +67,28 @@
             this.Pause.UseVisualStyleBackColor = true;
             this.Pause.Click += new System.EventHandler(this.Pause_Click);
             // 
-            // VideoPlayback
+            // axWindowsMediaPlayerMidi
+            // 
+            this.axWindowsMediaPlayerMidi.Enabled = true;
+            this.axWindowsMediaPlayerMidi.Location = new System.Drawing.Point(957, 432);
+            this.axWindowsMediaPlayerMidi.Name = "axWindowsMediaPlayerMidi";
+            this.axWindowsMediaPlayerMidi.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayerMidi.OcxState")));
+            this.axWindowsMediaPlayerMidi.Size = new System.Drawing.Size(20, 9);
+            this.axWindowsMediaPlayerMidi.TabIndex = 3;
+            // 
+            // AudioVideoPlayback
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(989, 470);
+            this.Controls.Add(this.axWindowsMediaPlayerMidi);
             this.Controls.Add(this.Pause);
             this.Controls.Add(this.PlayButton);
             this.Controls.Add(this.axWindowsMediaPlayer1);
-            this.Name = "VideoPlayback";
+            this.Name = "AudioVideoPlayback";
             this.Text = "VideoPlayback";
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayerMidi)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -86,6 +99,7 @@
         private System.Windows.Forms.Button PlayButton;
         private System.Windows.Forms.Button Pause;
         public System.Collections.Generic.List<string> MidiList;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayerMidi;
 
     }
 }

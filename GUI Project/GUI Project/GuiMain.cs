@@ -17,11 +17,11 @@ namespace GUI_Project
     
     public partial class MainGui : Form
     {
-        
-       // [DllImport("C:\\CV_test\\TestDLLTHing.dll",  CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        //public static extern int Testmain(string input);
 
-        static void LaunchCommandLineApp(string file_path)
+        //[DllImport("C:\\Users\\Matthew\\Desktop\\UK\\Fall 2016\\Senior-Design-GUI\\GUI Project\\GUI Project\\CV\\MidiConverter.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        //stringpublic static extern int ParseFile(string Fname, string Dname);
+
+        static void LaunchCV(string file_path)
         {
             
             ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -33,6 +33,34 @@ namespace GUI_Project
             try
             {
                 
+                // Start the process with the info we specified.
+                // Call WaitForExit and then the using statement will close.
+                using (Process exeProcess = Process.Start(startInfo))
+                {
+                    exeProcess.WaitForExit();
+                }
+            }
+            catch
+            {
+
+                // Log error.
+                MessageBox.Show("There was a problem opening the file for conversion", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+                //Need to end conversion and display an error MessageBox
+            }
+        }
+        static void LaunchMIDI(string notes_file, string dest_file)
+        {
+
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = false;
+            startInfo.UseShellExecute = false;
+            startInfo.FileName = "..\\..\\CV\\MidiConverter.exe";
+            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.Arguments = notes_file + " " + dest_file;
+            try
+            {
+
                 // Start the process with the info we specified.
                 // Call WaitForExit and then the using statement will close.
                 using (Process exeProcess = Process.Start(startInfo))
@@ -92,7 +120,7 @@ namespace GUI_Project
                     int begin = file.LastIndexOf('\\');
                     int end = file.LastIndexOf('.');
                     string dest_file = file.Substring(begin, end - begin + 1);
-                    dest_file += ".mid";
+                    dest_file += "mid";
                     DestinationFileNames.Add(dest_file);
                 }
                 OpenPressed = true;
@@ -154,7 +182,9 @@ namespace GUI_Project
                 int index = 0;
                 foreach(string file in SourceFileNames)
                 {
-                    LaunchCommandLineApp(file);
+                    LaunchCV(file);
+                    //LaunchMIDI("..//bin//Debug//temporaryOutputFileForReading.txt", DestinationFilePaths[index]);
+                    //ParseFile("temporaryOutputFileForReading.txt", DestinationFilePaths[index]);
                     //The result of Angelo's code is now in a file called:______
 
                     //Need to run MIDI code on each of the file that CV generates
@@ -183,7 +213,9 @@ namespace GUI_Project
                 videoWindow.axWindowsMediaPlayer1.currentPlaylist = playlist;
                 if(AudioPlaybackCheckBox.Checked)
                 {
-                    videoWindow.axWindowsMediaPlayer1.settings.volume = 0;
+                    //videoWindow.axWindowsMediaPlayer1.settings.volume = 0;
+                    videoWindow.use_midi_audio = true;
+                    videoWindow.MidiList = DestinationFilePaths;
                     //need to set Midilist to list of midi file paths
                     //videoWindow.MidiList
                     //and set a bool in videoWindow to indicate that the file should be muted
