@@ -277,6 +277,27 @@ using namespace std;
 		}
 	}
 
+	void logMidi(vector<MIDIClockTime> *note_array)
+	{
+		ofstream of("MIDIlog.txt");
+		for (int i = 0; i < 88; i++)
+		{
+			for (int j = 0; j < note_array[i].size(); j++)
+			{
+				of << note_array[i][j];
+				if (j % 2 == 0)
+				{
+					of << '-';
+				}
+				else
+				{
+					of << ',';
+				}
+			}
+			of << endl;
+		}
+	}
+
 	int main(int argc, char* argv[])
 	{
 		if (argc < 3)
@@ -321,6 +342,7 @@ using namespace std;
 			}
 			FrameNum++;
 		}
+		logMidi(NoteTimes);
 		return create_midi_file(NoteTimes, Dname);
 		
 	}
