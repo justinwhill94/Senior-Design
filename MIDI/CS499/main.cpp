@@ -320,7 +320,7 @@ using namespace std;
 		}
 
 		int FrameNum = 1;
-		int ChangeBuffer = 2;
+		int ChangeBuffer = 3;
 		while (getline(Infile, buf))
 		{
 			int CurrNote = 0;
