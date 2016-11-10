@@ -282,6 +282,7 @@ using namespace std;
 		ofstream of("MIDIlog.txt");
 		for (int i = 0; i < 88; i++)
 		{
+			of << i << ": ";
 			for (int j = 0; j < note_array[i].size(); j++)
 			{
 				of << note_array[i][j];
@@ -291,7 +292,7 @@ using namespace std;
 				}
 				else
 				{
-					of << ',';
+					of << '\t';
 				}
 			}
 			of << endl;
