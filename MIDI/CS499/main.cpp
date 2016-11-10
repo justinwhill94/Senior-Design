@@ -154,7 +154,7 @@ using namespace std;
 
 		MIDIClockTime t; // time in midi ticks
 		MIDIClockTime dt = 100; // time interval (1 second)
-		int clks_per_beat = 1; // number of ticks in crotchet (1...32767)
+		int clks_per_beat = 30; // number of ticks in crotchet (1...32767)
 		int num_tracks = 2; // tracks 0 and 1
 
 		MIDIMultiTrack tracks(num_tracks);  // the object which will hold all the tracks
@@ -189,7 +189,7 @@ using namespace std;
 		m.SetTimeSig(4, 2); // measure 4/4 (default values for time signature)
 		tracks.GetTrack(trk)->PutEvent(m);
 
-		int tempo = 1800; // set tempo to 1 000 000 usec = 1 sec in crotchet
+		int tempo = 1000000; // set tempo to 1 000 000 usec = 1 sec in crotchet
 							 // with value of clks_per_beat (100) result 10 msec in 1 midi tick
 							 // If no tempo is define, 120 beats per minute is assumed.
 
