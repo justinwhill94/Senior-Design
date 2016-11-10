@@ -308,15 +308,19 @@ using namespace std;
 		string Fname = argv[1], Dname = argv[2];
 
 		vector<MIDIClockTime> NoteTimes[88];
-
+		int NoteCount[88];
 		ifstream Infile(Fname);
 		string buf;
 
 		bool PastVals[88];
 		for (int i = 0; i < 88; i++)
+		{
 			PastVals[i] = false;
+			NoteCount[i] = 0;
+		}
 
 		int FrameNum = 1;
+		int ChangeBuffer = 2;
 		while (getline(Infile, buf))
 		{
 			int CurrNote = 0;
@@ -324,19 +328,29 @@ using namespace std;
 			{
 				if (buf[i] == '0')
 				{
-					if (PastVals[CurrNote])
+					if (PastVals[CurrNote] && NoteCount[CurrNote] > ChangeBuffer)
 					{
 						NoteTimes[CurrNote].push_back(FrameNum);
 						PastVals[CurrNote] = false;
+						NoteCount[CurrNote] = 0;
+					}
+					else
+					{
+						NoteCount[CurrNote]++;
 					}
 					CurrNote++;
 				}
 				else if (buf[i] == '1')
 				{
-					if (!PastVals[CurrNote])
+					if (!PastVals[CurrNote] && NoteCount[CurrNote] > ChangeBuffer)
 					{
 						NoteTimes[CurrNote].push_back(FrameNum);
 						PastVals[CurrNote] = true;
+						NoteCount[CurrNote] = 0;
+					}
+					else
+					{
+						NoteCount[CurrNote]++;
 					}
 					CurrNote++;
 				}
