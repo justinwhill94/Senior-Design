@@ -1,4 +1,4 @@
-﻿Build started 11/13/2016 4:04:12 PM.
+﻿Build started 11/13/2016 4:36:13 PM.
      1>Project "C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\CS499\CS499.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /D _MBCS /D _CRT_SECURE_NO_WARNINGS /Gm- /EHsc /MTd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
@@ -15,4 +15,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.17
+Time Elapsed 00:00:03.21

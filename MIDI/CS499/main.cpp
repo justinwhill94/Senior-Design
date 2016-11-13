@@ -328,23 +328,27 @@ int main(int argc, char* argv[])
 		int CurrNote = 2;
 		for (int i = 0; i < buf.length(); i++)
 		{
-			if (buf[i] == '0')
+			char tmpVal = buf[i];
+			if (CurrNote < 88)
 			{
-				if (PastVals[CurrNote])
+				if (tmpVal == '0')
 				{
-					NoteTimes[CurrNote].push_back(FrameNum);
-					PastVals[CurrNote] = false;
+					if (PastVals[CurrNote])
+					{
+						NoteTimes[CurrNote].push_back(FrameNum);
+						PastVals[CurrNote] = false;
+					}
+					CurrNote++;
 				}
-				CurrNote++;
-			}
-			else if (buf[i] == '1')
-			{
-				if (!PastVals[CurrNote])
+				else if (tmpVal == '1')
 				{
-					NoteTimes[CurrNote].push_back(FrameNum);
-					PastVals[CurrNote] = true;
+					if (!PastVals[CurrNote])
+					{
+						NoteTimes[CurrNote].push_back(FrameNum);
+						PastVals[CurrNote] = true;
+					}
+					CurrNote++;
 				}
-				CurrNote++;
 			}
 		}
 		FrameNum++;
