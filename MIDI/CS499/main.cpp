@@ -335,6 +335,7 @@ int main(int argc, char* argv[])
 					NoteTimes[CurrNote].push_back(FrameNum);
 					PastVals[CurrNote] = false;
 				}
+				CurrNote++;
 			}
 			else if (buf[i] == '1')
 			{
@@ -343,8 +344,8 @@ int main(int argc, char* argv[])
 					NoteTimes[CurrNote].push_back(FrameNum);
 					PastVals[CurrNote] = true;
 				}
+				CurrNote++;
 			}
-			CurrNote++;
 		}
 		FrameNum++;
 	}
