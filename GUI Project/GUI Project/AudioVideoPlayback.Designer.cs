@@ -45,7 +45,7 @@
             this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
             this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(965, 410);
             this.axWindowsMediaPlayer1.TabIndex = 0;
-            this.axWindowsMediaPlayer1.Enter += new System.EventHandler(this.axWindowsMediaPlayer1_Enter);
+            
             // 
             // PlayButton
             // 
@@ -70,11 +70,12 @@
             // axWindowsMediaPlayerMidi
             // 
             this.axWindowsMediaPlayerMidi.Enabled = true;
-            this.axWindowsMediaPlayerMidi.Location = new System.Drawing.Point(957, 432);
+            this.axWindowsMediaPlayerMidi.Location = new System.Drawing.Point(960, 428);
             this.axWindowsMediaPlayerMidi.Name = "axWindowsMediaPlayerMidi";
             this.axWindowsMediaPlayerMidi.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayerMidi.OcxState")));
-            this.axWindowsMediaPlayerMidi.Size = new System.Drawing.Size(20, 9);
-            this.axWindowsMediaPlayerMidi.TabIndex = 3;
+            this.axWindowsMediaPlayerMidi.Size = new System.Drawing.Size(17, 10);
+            this.axWindowsMediaPlayerMidi.TabIndex = 5;
+            this.axWindowsMediaPlayerMidi.Visible = false;
             // 
             // AudioVideoPlayback
             // 
@@ -99,7 +100,7 @@
         private System.Windows.Forms.Button PlayButton;
         private System.Windows.Forms.Button Pause;
         public System.Collections.Generic.List<string> MidiList;
-        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayerMidi;
+        public AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayerMidi;
 
     }
 }

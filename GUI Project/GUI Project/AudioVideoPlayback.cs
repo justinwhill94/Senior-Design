@@ -11,18 +11,42 @@ using System.Media;
 
 namespace GUI_Project
 {
+    
     public partial class AudioVideoPlayback : Form
     {
-        public bool use_midi_audio = false;
-        public AudioVideoPlayback()
+        
+        public bool use_midi;
+        private void video_StateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            if(e.newState == 1)
+            {
+                axWindowsMediaPlayer1.Ctlcontrols.pause();
+            }
+        }
+        private void audio_StateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            if (e.newState == 1)
+            {
+                axWindowsMediaPlayer1.Ctlcontrols.play();
+            }
+        }
+        public AudioVideoPlayback(bool use_midi_audio, List<string> MidiList)
         {
             InitializeComponent();
+            axWindowsMediaPlayer1.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(video_StateChange);
+            axWindowsMediaPlayerMidi.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(audio_StateChange);
+            use_midi = use_midi_audio;
             //axWindowsMediaPlayer1.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(axWindowsMediaPlayer1_PlayStateChange);
             axWindowsMediaPlayer1.uiMode = "none";
             axWindowsMediaPlayerMidi.uiMode = "invisible";
             axWindowsMediaPlayer1.enableContextMenu = false;
+            axWindowsMediaPlayerMidi.enableContextMenu = false;
+            
+            //axWindowsMediaPlayerMidi.settings.volume = 0;
             if(use_midi_audio)
             {
+                //axWindowsMediaPlayer1.settings.volume = 0;
+                axWindowsMediaPlayer1.settings.mute = true;
                 axWindowsMediaPlayer1.settings.volume = 0;
                 WMPLib.IWMPPlaylist playlist = axWindowsMediaPlayerMidi.playlistCollection.newPlaylist("PianoScrolls_Midi");
                 WMPLib.IWMPMedia media;
@@ -39,36 +63,27 @@ namespace GUI_Project
             }
             
         }
-        private void axWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
-        {
-           /* switch(e.newState)
-            {
-                case 1: //stopped
-                    break;
-                case 2: //paused
-                    break;
-                case 3: //playing
-                    break;
-
-            }*/
-        }
-        private void axWindowsMediaPlayer1_Enter(object sender, EventArgs e)
-        {
-            
-        }
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
             axWindowsMediaPlayer1.Ctlcontrols.play();
-            if (use_midi_audio)
+            
+            if (use_midi)
                 axWindowsMediaPlayerMidi.Ctlcontrols.play();
         }
 
         private void Pause_Click(object sender, EventArgs e)
         {
             axWindowsMediaPlayer1.Ctlcontrols.pause();
-            if (use_midi_audio)
+            if (use_midi)
                 axWindowsMediaPlayerMidi.Ctlcontrols.pause();
+        }
+
+        private void SwitchAudioButton_Click(object sender, EventArgs e)
+        {
+            
+            axWindowsMediaPlayerMidi.settings.mute = !(axWindowsMediaPlayerMidi.settings.mute);
+            axWindowsMediaPlayer1.settings.mute = !(axWindowsMediaPlayer1.settings.mute);
         }
     }
 }

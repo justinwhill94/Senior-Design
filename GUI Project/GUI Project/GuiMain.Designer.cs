@@ -30,7 +30,7 @@
         {
             this.RunButton = new System.Windows.Forms.Button();
             this.MainUIPanel = new System.Windows.Forms.Panel();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.CV_ProgressBar = new System.Windows.Forms.ProgressBar();
             this.AudioPlaybackCheckBox = new System.Windows.Forms.CheckBox();
             this.VideoPlaybackCheckBox = new System.Windows.Forms.CheckBox();
             this.DestOpenButton = new System.Windows.Forms.Button();
@@ -57,7 +57,7 @@
             // MainUIPanel
             // 
             this.MainUIPanel.BackColor = System.Drawing.Color.Azure;
-            this.MainUIPanel.Controls.Add(this.checkBox3);
+            this.MainUIPanel.Controls.Add(this.CV_ProgressBar);
             this.MainUIPanel.Controls.Add(this.AudioPlaybackCheckBox);
             this.MainUIPanel.Controls.Add(this.VideoPlaybackCheckBox);
             this.MainUIPanel.Controls.Add(this.DestOpenButton);
@@ -72,24 +72,23 @@
             this.MainUIPanel.TabIndex = 2;
             this.MainUIPanel.Visible = false;
             // 
-            // checkBox3
+            // CV_ProgressBar
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(6, 215);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(110, 17);
-            this.checkBox3.TabIndex = 8;
-            this.checkBox3.Text = "Note Visualization";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.CV_ProgressBar.Location = new System.Drawing.Point(325, 209);
+            this.CV_ProgressBar.Name = "CV_ProgressBar";
+            this.CV_ProgressBar.Size = new System.Drawing.Size(190, 23);
+            this.CV_ProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.CV_ProgressBar.TabIndex = 9;
+            this.CV_ProgressBar.Visible = false;
             // 
             // AudioPlaybackCheckBox
             // 
             this.AudioPlaybackCheckBox.AutoSize = true;
             this.AudioPlaybackCheckBox.Location = new System.Drawing.Point(6, 191);
             this.AudioPlaybackCheckBox.Name = "AudioPlaybackCheckBox";
-            this.AudioPlaybackCheckBox.Size = new System.Drawing.Size(100, 17);
+            this.AudioPlaybackCheckBox.Size = new System.Drawing.Size(128, 17);
             this.AudioPlaybackCheckBox.TabIndex = 7;
-            this.AudioPlaybackCheckBox.Text = "Audio Playback";
+            this.AudioPlaybackCheckBox.Text = "Use Generated Audio";
             this.AudioPlaybackCheckBox.UseVisualStyleBackColor = true;
             // 
             // VideoPlaybackCheckBox
@@ -204,8 +203,8 @@
         private System.Windows.Forms.Label UserDestFilePath;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox VideoPlaybackCheckBox;
-        private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox AudioPlaybackCheckBox;
+        public System.Windows.Forms.ProgressBar CV_ProgressBar;
     }
 }
 

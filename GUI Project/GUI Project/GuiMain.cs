@@ -24,31 +24,34 @@ namespace GUI_Project
         static void LaunchCV(string file_path)
         {
             
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = false;
-            startInfo.UseShellExecute = false;
-            startInfo.FileName = "..\\..\\CV\\ScrollReader_CV.exe";
-            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.Arguments = file_path;
-            try
-            {
-                
-                // Start the process with the info we specified.
-                // Call WaitForExit and then the using statement will close.
-                using (Process exeProcess = Process.Start(startInfo))
-                {
-                    exeProcess.WaitForExit();
-                }
-            }
-            catch
-            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.CreateNoWindow = true;
+                startInfo.UseShellExecute = false;
+                startInfo.FileName = "..\\..\\CV\\ScrollReader_CV.exe";
+                //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.Arguments = "\"" + file_path + "\"";
 
-                // Log error.
-                MessageBox.Show("There was a problem opening the file for conversion", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-                //Need to end conversion and display an error MessageBox
-            }
+                try
+                {
+
+                    // Start the process with the info we specified.
+                    // Call WaitForExit and then the using statement will close.
+                    using (Process exeProcess = Process.Start(startInfo))
+                    {
+                        exeProcess.WaitForExit();
+                    }
+                }
+                catch
+                {
+
+                    // Log error.
+                    MessageBox.Show("There was a problem with the MIDI generation", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                    //Need to end conversion and display an error MessageBox
+                }
+
         }
+
         static void LaunchMIDI(string notes_file, string dest_file)
         {
 
@@ -56,8 +59,9 @@ namespace GUI_Project
             startInfo.CreateNoWindow = false;
             startInfo.UseShellExecute = false;
             startInfo.FileName = "..\\..\\CV\\MidiConverter.exe";
+            startInfo.CreateNoWindow = true;
             //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.Arguments = notes_file + " " + dest_file;
+            startInfo.Arguments = "\"" + notes_file + "\"" + " " + "\"" + dest_file + "\"";
             try
             {
 
@@ -82,7 +86,10 @@ namespace GUI_Project
             
             InitializeComponent();
             MainUIPanel.Visible = true;
+
+            CV_ProgressBar.MarqueeAnimationSpeed = 0;
         }
+
         //list of file paths, both source and destination
         List<string> SourceFileNames = new List<string>();
         List<string> DestinationFileNames = new List<string>();
@@ -120,7 +127,7 @@ namespace GUI_Project
                     int begin = file.LastIndexOf('\\');
                     int end = file.LastIndexOf('.');
                     string dest_file = file.Substring(begin, end - begin + 1);
-                    dest_file += "mid";
+                    dest_file += "midi";
                     DestinationFileNames.Add(dest_file);
                 }
                 OpenPressed = true;
@@ -134,18 +141,6 @@ namespace GUI_Project
         private void DestOpenButton_Click(object sender, EventArgs e)
         {
             
-            /*
-            SaveFileDialog SaveFile = new SaveFileDialog();
-            //OpenFile.Multiselect = true;
-            SaveFile.Filter = "MIDI Files (*.smf) |*.smf";
-            SaveFile.ShowDialog();
-            if (SaveFile.FileName != "")
-            {
-                UserDestFilePath.Text = SaveFile.FileName;
-                DestFileName = SaveFile.FileName;
-                SavePressed = true;
-            }
-            */
             //Open up the folder dialog, so the user can select where their new files will be stored
             FolderBrowserDialog saveDestDlg = new FolderBrowserDialog();
             if(saveDestDlg.ShowDialog() == DialogResult.OK)
@@ -173,6 +168,11 @@ namespace GUI_Project
             }
             else
             {
+                /*CV_ProgressBar.Style = ProgressBarStyle.Marquee;
+                BackgroundWorker CV_BackgroundWorker = new BackgroundWorker();
+                CV_BackgroundWorker.DoWork += new DoWorkEventHandler(CV_BackgroundWorker_DoWork);
+                CV_BackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(CV_BackgroundWorker_RunWorkerCompleted);
+                CV_ProgressBar.Visible = true;*/
                 foreach(string dest_file in DestinationFileNames)
                 {
                     string dest_path = DestFolderName  + dest_file;
@@ -182,28 +182,26 @@ namespace GUI_Project
                 int index = 0;
                 foreach(string file in SourceFileNames)
                 {
+                    Cursor.Current = Cursors.WaitCursor;
+                    //Run the computer vision program
                     LaunchCV(file);
-                    //LaunchMIDI("..//bin//Debug//temporaryOutputFileForReading.txt", DestinationFilePaths[index]);
-                    //ParseFile("temporaryOutputFileForReading.txt", DestinationFilePaths[index]);
-                    //The result of Angelo's code is now in a file called:______
-
-                    //Need to run MIDI code on each of the file that CV generates
-                    
-                    //Need to save the midi files as the corresponding DestinationFilePath
-
-                    //Probably need to add a case where the file already exists. 
-                    //We'll likely just append a '_1' or something to the end
+                    //Run the Midi generation program
+                    LaunchMIDI(".\\temporaryOutputFileForReading.txt", DestinationFilePaths[index]);
+                    Cursor.Current = Cursors.Arrow;
 
                     //increment the index so we know which DestinationFilePath to use
                     index++;
                 }
+                //CV_ProgressBar.MarqueeAnimationSpeed = 0;
+                CV_ProgressBar.Hide();
                 
             }
             //If the user wants video playback
             if(VideoPlaybackCheckBox.Checked)
             {
-                AudioVideoPlayback videoWindow = new AudioVideoPlayback();
-                WMPLib.IWMPPlaylist playlist = videoWindow.axWindowsMediaPlayer1.playlistCollection.newPlaylist("PianoScrolls");
+                //create the playback form and fill the primary media player's playlist with the piano scroll videos
+                AudioVideoPlayback videoWindow = new AudioVideoPlayback(AudioPlaybackCheckBox.Checked, DestinationFilePaths);
+                WMPLib.IWMPPlaylist playlist = videoWindow.axWindowsMediaPlayer1.playlistCollection.newPlaylist("PianoScrolls_Original");
                 WMPLib.IWMPMedia media;
                 foreach (string file in SourceFileNames)
                 {
@@ -211,26 +209,26 @@ namespace GUI_Project
                     playlist.appendItem(media);
                 }
                 videoWindow.axWindowsMediaPlayer1.currentPlaylist = playlist;
-                if(AudioPlaybackCheckBox.Checked)
+                
+                videoWindow.ShowDialog();
+            }
+            else if(AudioPlaybackCheckBox.Checked)
+            {
+                AudioVideoPlayback videoWindow = new AudioVideoPlayback(AudioPlaybackCheckBox.Checked, DestinationFilePaths);
+                WMPLib.IWMPPlaylist playlist = videoWindow.axWindowsMediaPlayer1.playlistCollection.newPlaylist("PianoScrolls_Midi");
+                WMPLib.IWMPMedia media;
+                foreach (string file in DestinationFilePaths)
                 {
-                    //videoWindow.axWindowsMediaPlayer1.settings.volume = 0;
-                    videoWindow.use_midi_audio = true;
-                    videoWindow.MidiList = DestinationFilePaths;
-                    //need to set Midilist to list of midi file paths
-                    //videoWindow.MidiList
-                    //and set a bool in videoWindow to indicate that the file should be muted
-                    //and the midi file should be played instead
-                    //One possible solution for playing the midi file is to make an invisible media player
-                    //that will play the midi file (need to test if wmp can play a midi file) and use the first
-                    //player to play the video. Need to test that once we have some MIDI files to play with
+                    media = videoWindow.axWindowsMediaPlayer1.newMedia(file);
+                    playlist.appendItem(media);
                 }
+                videoWindow.axWindowsMediaPlayer1.currentPlaylist = playlist;
+
                 videoWindow.ShowDialog();
             }
             //is this the proper way to end the program?
             System.Windows.Forms.Application.Exit();
-          
-
-
+         
         }
 
     }
