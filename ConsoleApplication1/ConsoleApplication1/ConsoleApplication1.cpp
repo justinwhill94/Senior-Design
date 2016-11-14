@@ -21,10 +21,12 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <math.h>
 
 using namespace std;
 using namespace cv;
 
+// Struct used in calculation of euclidean distance (used in clustering algorithm)
 struct EuclideanDistanceFunctor
 {
     int _dist2;
@@ -32,7 +34,7 @@ struct EuclideanDistanceFunctor
 
     bool operator()(const Point& lhs, const Point& rhs) const
     {
-        return ((lhs.x - rhs.x)*(lhs.x - rhs.x) + (lhs.y - rhs.y)*(lhs.y - rhs.y)) < _dist2;
+        return ((lhs.x - rhs.x)*(lhs.x - rhs.x) + (lhs.y - rhs.y)*(lhs.y - rhs.y)) < _dist2; //Equation for euclidean distance
     }
 };
 
@@ -40,28 +42,38 @@ int main( int argc, const char** argv )
 {
 
 	try{
+		//Used in debugging to play video 
 		bool playVideo = false;
+
+		//get file name (for use in GUI)
 		string filePath = argv[1];
 		cout << filePath << endl;
 		VideoCapture cap(filePath); // open the video file for reading
-	// VideoCapture cap("C:/Users/Angelo/Documents/MATLAB/PianoRollVid.avi"); // open the video file for reading
-	   cap.set(CV_CAP_PROP_POS_MSEC, 0); //start the video at 300ms
-	   double numFrames = cap.get(CV_CAP_PROP_FRAME_COUNT);
-    double fps = cap.get(CV_CAP_PROP_FPS); //get the frames per seconds of the video
+		cap.set(CV_CAP_PROP_POS_MSEC, 0); //start the video at 300ms
+		double numFrames = cap.get(CV_CAP_PROP_FRAME_COUNT);
+		double fps = cap.get(CV_CAP_PROP_FPS); //get the frames per seconds of the video
 
      //cout << "Frame per seconds : " << fps << endl;
 	 //cout << "Number of frames : " << numFrames << endl;
 	if (playVideo){
-    namedWindow("MyVideo",CV_WINDOW_AUTOSIZE); //create a window called "MyVideo"
+		namedWindow("PianoScrollVideo",CV_WINDOW_AUTOSIZE); //create a window called "MyVideo"
 	}
 	//Define coordinates for box to look for pixels
+	//Improvement: user enters boundaries of ROI or it is automatically detected
 	int subFrameXCoord = 45; 
 	int subFrameYCoord = 300; 
 	int subFrameWidth = 1014; 
-	int subFrameHeight = 6;
+	int subFrameHeight = 8;
+
+	//How far apart each note is
+	double individualNoteRes = subFrameWidth/84.0;
+
 	// Define the distance between clusters
     int euclidean_distance = 6;
+	//File where output vector is sent
 	ofstream noteFile("temporaryOutputFileForReading.txt");
+
+	//Run through video
     while(1)
     {
         Mat frame;
@@ -71,117 +83,135 @@ int main( int argc, const char** argv )
 
          if (!bSuccess) //if not success, break loop
         {
-                       //cout << "Cannot read the frame from video file" << endl;
-                       break;
+            //cout << "Cannot read the frame from video file" << endl;
+            break;
         }
 
-		 if (playVideo){
-        imshow("MyVideo", frame); //show the frame in "MyVideo" window
-		 }
+		if (playVideo){
+			imshow("PianoScrollVideo", frame); //show the frame in "MyVideo" window
+		}
 		Mat edge,draw,subFrame;//,noZeroCoords;
 		vector<Point> noZeroCoords;
 		
-		subFrame = frame(Rect(subFrameXCoord,subFrameYCoord,subFrameWidth,subFrameHeight)); //best range for this video 
+		//Set the region of interest (ROI) to search for edges
+		subFrame = frame(Rect(subFrameXCoord,subFrameYCoord,subFrameWidth,subFrameHeight));  
 
+		//Detect edges
 		Canny(subFrame,edge,50,150,3);
 		int countNon0 = countNonZero(edge);
+
+		//Check to see if any edges were found
 		if(countNon0 == 0){
-			//Output empty array
-			//cout << "fail" << endl;
+			//If none...
+			//Output array or zeros
 			for(int i = 0; i < 88; i++){
 				noteFile << outputNoteVec[i] << " ";
 			}
 			noteFile << endl;
 		}
 		else{
+			//Find pixel locations of all edges
 			findNonZero(edge,noZeroCoords);
-		vector<int> labels;
 
-    // With functor
-    int n_labels = partition(noZeroCoords, labels, EuclideanDistanceFunctor(euclidean_distance));
+			vector<int> labels;
 
-    // Store all points in same cluster, and compute centroids
-    vector<vector<Point>> clusters(n_labels);
-    vector<Point> centroids(n_labels, Point(0,0));
+			//Calculate the number of clusters
+			int n_labels = partition(noZeroCoords, labels, EuclideanDistanceFunctor(euclidean_distance));
 
-    for (int i = 0; i < noZeroCoords.size(); ++i)
-    {
-        clusters[labels[i]].push_back(noZeroCoords[i]);
-        centroids[labels[i]] += noZeroCoords[i];
-    }
-    for (int i = 0; i < n_labels; ++i)
-    {
-        centroids[i].x /= clusters[i].size();
-        centroids[i].y /= clusters[i].size();
-    }
+			// Store all points in same cluster, and compute centroids
+			vector<vector<Point>> clusters(n_labels);
+			//Initialize the vector of centroids
+			vector<Point> centroids(n_labels, Point(0,0));
 
-	//Loop through centroids and see where they fall
-	int vectCtr = 0;
-	for (int i = 0; i < 84; ++i)
-    {
-		if(vectCtr <= n_labels){
-			//There is a 12 pixel zone in which each note might fall, so check to see if the x coordinate of the current cluster lies within this zone
-			if((centroids[vectCtr].x + subFrameXCoord < 11.5*(i+1)) && (centroids[vectCtr].x + subFrameXCoord > 11.5*i)){
-				vectCtr++;
-				outputNoteVec[i] = 1;
+			//Add the pixel locations of the edges to the set of clusters and centroids
+			for (int i = 0; i < noZeroCoords.size(); ++i)
+			{
+				clusters[labels[i]].push_back(noZeroCoords[i]);
+				centroids[labels[i]] += noZeroCoords[i];
 			}
-			else
-				outputNoteVec[i] = 0;
-        
-		}
-	}
-    // Draw results
+			//Calculate the x and y positions of all the centroids
+			for (int i = 0; i < n_labels; ++i)
+			{
+				centroids[i].x /= clusters[i].size();
+				centroids[i].y /= clusters[i].size();
+			}
 
-    // Build a vector of random color, one for each class (label)
-    vector<Vec3b> colors;
-    for (int i = 0; i < n_labels; ++i)
-    {
-        colors.push_back(Vec3b(0 & 255, 255 & 255, 0 & 255));
-    }
+			//Initialize the counter that is used to loop through the centroids
+			int vectCtr = 0;
+				if(playVideo){
+				for(int j = 0; j < n_labels; j++){
+					cout << centroids[j].x << " ";
+				}
+				cout << endl;
+			}
 
-    // Draw the points
-    Mat3b res(frame.rows, frame.cols, Vec3b(0, 0, 0));
-    for (int i = 0; i < noZeroCoords.size(); ++i)
-    {
-        res(noZeroCoords[i]) = colors[labels[i]];
-    }
+			//int i = 0;
+			while(vectCtr < n_labels){
+			//for (int i = 0; i < 84; ++i){
+				if(vectCtr <= n_labels){
+					//The note location on the piano is the rounded result of the x location of each centroid divided by the range of pixels for any note
+					int noteLoc = floor((centroids[vectCtr].x)/individualNoteRes +.5);
+					outputNoteVec[noteLoc] = 1;
+					vectCtr++;
+					//There is a ~11.5 pixel zone in which each note might fall, so check to see if the x coordinate of the current cluster lies within this zone
+					/*if((centroids[vectCtr].x <= 1.05*individualNoteRes*(i+1)) && (centroids[vectCtr].x >= .95*individualNoteRes*i)){
+						//cout << centroids[vectCtr].x + subFrameXCoord << " ";
+						vectCtr++;
+						outputNoteVec[i] = 1;
+					}
+					else
+						outputNoteVec[i] = 0;*/
+				}
+				//Mod the value of i in order to guarantee that all elements of centroids are checked
+				//i = (i+1)%84;
+			}
 
-    // Draw centroids
-    for (int i = 0; i < n_labels; ++i)
-    {
-        circle(res, centroids[i], 3, Scalar(colors[i][0], colors[i][1], colors[i][2]), CV_FILLED);
-        circle(res, centroids[i], 6, Scalar(255 - colors[i][0], 255 - colors[i][1], 255 - colors[i][2]));
-    }
+			//Only draw results if the debugging option for playing the video is enabled
+			if (playVideo){
+			// Draw results
+			// Build a vector of random color, one for each class (label)
+			vector<Vec3b> colors;
+			for (int i = 0; i < n_labels; ++i)
+			{
+				colors.push_back(Vec3b(0 & 255, 255 & 255, 0 & 255));
+			}
 
-	if (playVideo){
-    imshow("Clusters", res);
-	}
-	for(int i = 0; i < 88; i++){
-		noteFile << outputNoteVec[i] << " ";
-		}
-	noteFile << endl;
+			// Draw the points
+			Mat3b res(frame.rows, frame.cols, Vec3b(0, 0, 0));
+			for (int i = 0; i < noZeroCoords.size(); ++i)
+			{
+				res(noZeroCoords[i]) = colors[labels[i]];
+			}
+
+			// Draw centroids
+			for (int i = 0; i < n_labels; ++i)
+			{
+				circle(res, centroids[i], 3, Scalar(colors[i][0], colors[i][1], colors[i][2]), CV_FILLED);
+				circle(res, centroids[i], 6, Scalar(255 - colors[i][0], 255 - colors[i][1], 255 - colors[i][2]));
+			}
+
+			
+				imshow("Clusters", res);
+			}
+			for(int i = 0; i < 88; i++){
+				noteFile << outputNoteVec[i] << " ";
+			}
+			noteFile << endl;
 	
-	if(waitKey(30) == 27) //wait for 'esc' key press for 30 ms. If 'esc' key is pressed, break loop
-       {
-                //cout << "esc key is pressed by user" << endl; 
-                break; 
-       }/*
-	for(int i = 0; i < 88; i++){
-		cout << outputNoteVec[i] << " ";
+			if(waitKey(30) == 27) //wait for 'esc' key press for 30 ms. If 'esc' key is pressed, break loop
+			   {
+					//cout << "esc key is pressed by user" << endl; 
+					break; 
+			   }
+			if (playVideo){
+				for(int i = 0; i < 88; i++){
+					cout << outputNoteVec[i] << " ";
+				}
+				cout << endl;
+				waitKey();
+			}
 		}
-	cout << endl;*/
-	//waitKey();
-		
-	}/*
-		cout << tempMin << " " << pixCountCurrRange << endl;
-		edge.convertTo(draw, CV_8U);
-
-		 namedWindow("image", CV_WINDOW_AUTOSIZE);
-		 imshow("image", draw);
-		 fill(outputNoteVec.begin(),outputNoteVec.end(),0);
-    }
-	*/
-		}
+	}
     return 0;
 	}
 
