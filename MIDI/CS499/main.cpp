@@ -44,105 +44,27 @@ using namespace jdksmidi;
 #include<list>
 using namespace std;
 
-
-
-
-void add_notes_to_midi(vector<MIDIClockTime>* &note_array, MIDITimedBigMessage &m, MIDIMultiTrack &tracks, int &trk, MIDIClockTime &t, MIDIClockTime &dt, unsigned char &chan, unsigned char &note, unsigned char &velocity, unsigned char &ctrl, unsigned char &val) {
+void add_notes_to_midi(vector<MIDIClockTime>* &note_array, MIDITimedBigMessage &m, MIDIMultiTrack &tracks, int &trk, MIDIClockTime &t, unsigned char &chan, unsigned char &note, unsigned char &velocity, unsigned char &ctrl, unsigned char &val) {
 	// go through all the notes
-	MIDIClockTime on, off = 0;
-	for (int note_id = 0; note_id < 88; note_id++) {
-		for (unsigned int i = 1; i < note_array[note_id].size(); i += 2) {
-			on = note_array[note_id][i - 1];
-			off = note_array[note_id][i];
+	MIDIClockTime on, off; // used to get the on/off times of each note from the input vector
+	for (int note_id = 0; note_id < 88; note_id++) { // loop through all the note pitches
+		for (unsigned int i = 1; i < note_array[note_id].size(); i += 2) { // loop through all the pairs of on/off times
+			on = note_array[note_id][i - 1]; // get the on time
+			off = note_array[note_id][i]; // get the off time
 
-			m.SetTime(on);
-			m.SetNoteOn(chan = 0, note = note_id, velocity = 100);
-			tracks.GetTrack(trk)->PutEvent(m);
+			m.SetTime(on); // go to the on time
+			m.SetNoteOn(chan = 0, note = note_id, velocity = 100); // turn the note on
+			tracks.GetTrack(trk)->PutEvent(m); // put the on event
 
-			m.SetTime(off);
-			m.SetNoteOff(chan = 0, note = note_id, velocity = 100);
-			tracks.GetTrack(trk)->PutEvent(m);
+			m.SetTime(off); // go to the off time 
+			m.SetNoteOff(chan = 0, note = note_id, velocity = 100); // turn the note off
+			tracks.GetTrack(trk)->PutEvent(m); // put the off event
 		}
 		// add a pause at the end of the track
 		m.SetTime(off + 100);
 		m.SetNoteOn(chan = 0, note = 0, velocity = 0);
 		tracks.GetTrack(trk)->PutEvent(m);
 	}
-
-
-	//// create individual midi events with the MIDITimedBigMessage and add them to a track 1
-
-	//t = 0;
-
-	//// we add note 1: press and release in (dt) ticks
-
-	//m.SetTime(t);
-	//m.SetNoteOn(chan = 0, note = 60, velocity = 100);
-	//tracks.GetTrack(trk)->PutEvent(m);
-
-	//// after note(s) on before note(s) off: add words to music in the present situation
-	////tracks.GetTrack(trk)->PutTextEvent(t, META_LYRIC_TEXT, "Left");
-
-	//m.SetTime(t += dt);
-	//m.SetNoteOff(chan, note, velocity);
-	//// alternative form of note off event: useful to reduce midifile size if running status is used (on default so)
-	//// m.SetNoteOn( chan, note, 0 );
-	//tracks.GetTrack(trk)->PutEvent(m);
-
-	//// note 2
-
-	//m.SetNoteOn(chan = 1, note = 64, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-
-	////tracks.GetTrack(trk)->PutTextEvent(t, META_LYRIC_TEXT, "Centre");
-
-	//m.SetTime(t += dt);
-	//m.SetNoteOff(chan, note, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-
-	//// note 3
-
-	//m.SetNoteOn(chan = 2, note = 67, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-
-	////tracks.GetTrack(trk)->PutTextEvent(t, META_LYRIC_TEXT, "Right");
-
-	//m.SetTime(t += dt);
-	//m.SetNoteOff(chan, note, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-
-	//// add pause
-
-	//t += dt;
-
-	//// add chord: 3 notes simultaneous
-
-	//// press
-	//m.SetTime(t);
-	//m.SetNoteOn(chan = 0, note = 60, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-	//m.SetNoteOn(chan = 1, note = 64, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-	//m.SetNoteOn(chan = 2, note = 67, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-
-	////tracks.GetTrack(trk)->PutTextEvent(t, META_LYRIC_TEXT, "Chord");
-
-	//// release
-	//m.SetTime(t += (2 * dt));
-	//m.SetNoteOff(chan = 0, note = 60, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-	//m.SetNoteOff(chan = 1, note = 64, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-	//m.SetNoteOff(chan = 2, note = 67, velocity);
-	//tracks.GetTrack(trk)->PutEvent(m);
-
-	//// add pause: press note with velocity = 0 equivalent to simultaneous release it
-
-	//t += dt;
-	//m.SetTime(t);
-	//m.SetNoteOn(chan = 0, note = 0, velocity = 0);
-	//tracks.GetTrack(trk)->PutEvent(m);
 }
 
 int create_midi_file(vector<MIDIClockTime>* note_array, string Fname) {
@@ -153,8 +75,7 @@ int create_midi_file(vector<MIDIClockTime>* note_array, string Fname) {
 		note, velocity, ctrl, val;
 
 	MIDIClockTime t; // time in midi ticks
-	MIDIClockTime dt = 100; // time interval (1 second)
-	int clks_per_beat = 30; // number of ticks in crotchet (1...32767)
+	int clks_per_beat = 30; // number of ticks in crotchet (1...32767) -- frames / sec in video
 	int num_tracks = 2; // tracks 0 and 1
 
 	MIDIMultiTrack tracks(num_tracks);  // the object which will hold all the tracks
@@ -168,37 +89,18 @@ int create_midi_file(vector<MIDIClockTime>* note_array, string Fname) {
 
 	trk = 0;
 
-	/*
-	SetTimeSig( numerator, denominator_power )
-	The numerator is specified as a literal value, the denominator_power is specified as (get ready!)
-	the value to which the power of 2 must be raised to equal the number of subdivisions per whole note.
-
-	For example, a value of 0 means a whole note because 2 to the power of 0 is 1 (whole note),
-	a value of 1 means a half-note because 2 to the power of 1 is 2 (half-note), and so on.
-
-	(numerator, denominator_power) => musical measure conversion
-	(1, 1) => 1/2
-	(2, 1) => 2/2
-	(1, 2) => 1/4
-	(2, 2) => 2/4
-	(3, 2) => 3/4
-	(4, 2) => 4/4
-	(1, 3) => 1/8
-	*/
-
 	m.SetTimeSig(4, 2); // measure 4/4 (default values for time signature)
 	tracks.GetTrack(trk)->PutEvent(m);
 
 	int tempo = 1000000; // set tempo to 1 000 000 usec = 1 sec in crotchet
 						 // with value of clks_per_beat (100) result 10 msec in 1 midi tick
-						 // If no tempo is define, 120 beats per minute is assumed.
+						 // If no tempo is defined, 120 beats per minute is assumed.
 
-						 // m.SetTime( t ); // do'nt need, because previous time is not changed
 	m.SetTempo(tempo);
 	tracks.GetTrack(trk)->PutEvent(m);
 
 	// META_TRACK_NAME text in track 0 music notation software like Sibelius uses as headline of the music
-	tracks.GetTrack(trk)->PutTextEvent(t, META_TRACK_NAME, "LibJDKSmidi create_midifile.cpp example by VRM");
+	tracks.GetTrack(trk)->PutTextEvent(t, META_TRACK_NAME, "MIDI file generated by Scroll Reader by Measured Solutions");
 
 	// create cannal midi events and add them to a track 1
 
@@ -207,15 +109,8 @@ int create_midi_file(vector<MIDIClockTime>* note_array, string Fname) {
 	// META_TRACK_NAME text in tracks >= 1 Sibelius uses as instrument name (left of staves)
 	tracks.GetTrack(trk)->PutTextEvent(t, META_TRACK_NAME, "Piano");
 
-	// we change panorama in channels 0-2
-
-	m.SetControlChange(chan = 0, ctrl = 0xA, val = 0); // channel 0 panorama = 0 at the left
-	tracks.GetTrack(trk)->PutEvent(m);
-
-	m.SetControlChange(chan = 1, ctrl, val = 64); // channel 1 panorama = 64 at the centre
-	tracks.GetTrack(trk)->PutEvent(m);
-
-	m.SetControlChange(chan = 2, ctrl, val = 127); // channel 2 panorama = 127 at the right
+	// set pan on chan 0 to center 
+	m.SetControlChange(chan = 0, ctrl = 0xA, val = 64); // channel 0 panorama = 0 at the center
 	tracks.GetTrack(trk)->PutEvent(m);
 
 	// we change musical instrument in channels 0-2
@@ -223,24 +118,16 @@ int create_midi_file(vector<MIDIClockTime>* note_array, string Fname) {
 	m.SetProgramChange(chan = 0, val = 0); // channel 0 instrument 0 - Piano
 	tracks.GetTrack(trk)->PutEvent(m);
 
-	m.SetProgramChange(chan = 1, val);
-	tracks.GetTrack(trk)->PutEvent(m);
-
-	m.SetProgramChange(chan = 2, val);
-	tracks.GetTrack(trk)->PutEvent(m);
-
-	add_notes_to_midi(note_array, m, tracks, trk, t, dt, chan, note, velocity, ctrl, val);
+	add_notes_to_midi(note_array, m, tracks, trk, t, chan, note, velocity, ctrl, val);
 
 	// if events in any track recorded not in order of the growth of time,
 	tracks.SortEventsOrder(); // it is necessary to do this before write step
 
 	// to write the multi track object out, you need to create an output stream for the output filename
-
 	const char *outfile_name = Fname.c_str();
 	MIDIFileWriteStreamFileName out_stream(outfile_name);
 
 	// then output the stream like my example does, except setting num_tracks to match your data
-
 	if (out_stream.IsValid())
 	{
 		// the object which takes the midi tracks and writes the midifile to the output stream
@@ -265,18 +152,7 @@ int create_midi_file(vector<MIDIClockTime>* note_array, string Fname) {
 	return return_code;
 }
 
-void display_notes(vector<MIDIClockTime> *note_array) {
-	ofstream outfile("TestMidiOutput");
-	outfile << "note array: " << endl;
-	for (int note_id = 0; note_id < 88; note_id++) {
-		outfile << note_id;
-		for (unsigned int i = 0; i < note_array[note_id].size(); i++) {
-			outfile << "\t" << note_array[note_id][i];
-		}
-		outfile << endl;
-	}
-}
-
+// outputs log file for testing purposes (can be removed when program is completed)
 void logMidi(vector<MIDIClockTime> *note_array)
 {
 	ofstream of("MIDIlog.txt");
@@ -310,7 +186,7 @@ int main(int argc, char* argv[])
 	vector<MIDIClockTime> NoteTimes[88];
 	//int NoteCount[88];
 	ifstream Infile(Fname);
-	string buf;
+	string buf; // used to read in each line of the output of the CV code
 
 	bool PastVals[88];
 	for (int i = 0; i < 88; i++)
@@ -322,7 +198,7 @@ int main(int argc, char* argv[])
 	int FrameNum = 1;
 	//int ChangeBuffer = 1;
 
-
+	// this loop takes in the output of the CV code and translates it into a format readable by the MIDI code.
 	while (getline(Infile, buf))
 	{
 		int CurrNote = 2;
@@ -354,44 +230,6 @@ int main(int argc, char* argv[])
 		FrameNum++;
 	}
 
-	/*
-	while (getline(Infile, buf))
-	{
-		int CurrNote = 2;
-		for (int i = 0; i < buf.length(); i++)
-		{
-			if (buf[i] == '0')
-			{
-				if (PastVals[CurrNote] && NoteCount[CurrNote] > ChangeBuffer)
-				{
-					NoteTimes[CurrNote].push_back(FrameNum);
-					PastVals[CurrNote] = false;
-					NoteCount[CurrNote] = 0;
-				}
-				else
-				{
-					NoteCount[CurrNote]++;
-				}
-				CurrNote++;
-			}
-			else if (buf[i] == '1')
-			{
-				if (!PastVals[CurrNote] && NoteCount[CurrNote] > ChangeBuffer)
-				{
-					NoteTimes[CurrNote].push_back(FrameNum);
-					PastVals[CurrNote] = true;
-					NoteCount[CurrNote] = 0;
-				}
-				else
-				{
-					NoteCount[CurrNote]++;
-				}
-				CurrNote++;
-			}
-		}
-		FrameNum++;
-	}
-	*/
 	logMidi(NoteTimes);
 	return create_midi_file(NoteTimes, Dname);
 
