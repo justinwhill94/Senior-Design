@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
 	string Fname = argv[1], Dname = argv[2];
 
 	vector<MIDIClockTime> NoteTimes[88];
-	//int NoteCount[88];
+	
 	ifstream Infile(Fname);
 	string buf; // used to read in each line of the output of the CV code
 
@@ -196,7 +196,7 @@ int main(int argc, char* argv[])
 	}
 
 	int FrameNum = 1;
-	//int ChangeBuffer = 1;
+	
 
 	// this loop takes in the output of the CV code and translates it into a format readable by the MIDI code.
 	while (getline(Infile, buf))
@@ -229,8 +229,6 @@ int main(int argc, char* argv[])
 		}
 		FrameNum++;
 	}
-
-	logMidi(NoteTimes);
 	return create_midi_file(NoteTimes, Dname);
 
 }
