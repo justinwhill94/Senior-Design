@@ -43,20 +43,20 @@ int main( int argc, const char** argv )
 
 	try{
 		//Used in debugging to play video 
-		bool playVideo = false;
+		bool playVideo = true;
 
 		//get file name (for use in GUI)
 		string filePath = argv[1];
 		cout << filePath << endl;
 		VideoCapture cap(filePath); // open the video file for reading
-		cap.set(CV_CAP_PROP_POS_MSEC, 0); //start the video at 300ms
+		cap.set(CV_CAP_PROP_POS_MSEC, 300); //start the video at 300ms
 		double numFrames = cap.get(CV_CAP_PROP_FRAME_COUNT);
 		double fps = cap.get(CV_CAP_PROP_FPS); //get the frames per seconds of the video
 
      //cout << "Frame per seconds : " << fps << endl;
 	 //cout << "Number of frames : " << numFrames << endl;
 	if (playVideo){
-		namedWindow("PianoScrollVideo",CV_WINDOW_AUTOSIZE); //create a window called "MyVideo"
+		namedWindow("PianoScrollVideo",CV_WINDOW_AUTOSIZE); //create a window 
 	}
 	//Define coordinates for box to look for pixels
 	//Improvement: user enters boundaries of ROI or it is automatically detected
@@ -150,7 +150,7 @@ int main( int argc, const char** argv )
 			//for (int i = 0; i < 84; ++i){
 				if(vectCtr <= n_labels){
 					//The note location on the piano is the rounded result of the x location of each centroid divided by the range of pixels for any note
-					int noteLoc = floor((centroids[vectCtr].x)/individualNoteRes +.5);
+					int noteLoc = floor((centroids[vectCtr].x)/individualNoteRes +.5)+1;
 					outputNoteVec[noteLoc] = 1;
 					vectCtr++;
 					//There is a ~11.5 pixel zone in which each note might fall, so check to see if the x coordinate of the current cluster lies within this zone
