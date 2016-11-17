@@ -1,4 +1,4 @@
-﻿Build started 11/16/2016 5:42:45 PM.
+﻿Build started 11/17/2016 12:10:56 AM.
      1>Project "C:\Users\Angelo\Documents\gitStuff\Senior-Design\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(346,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
      1>ClCompile:
@@ -18,4 +18,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.62
+Time Elapsed 00:00:03.14

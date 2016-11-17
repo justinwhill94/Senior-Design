@@ -49,7 +49,7 @@ int main( int argc, const char** argv )
 		string filePath = argv[1];
 		cout << filePath << endl;
 		VideoCapture cap(filePath); // open the video file for reading
-		cap.set(CV_CAP_PROP_POS_MSEC, 0); //start the video at 300ms
+		cap.set(CV_CAP_PROP_POS_MSEC, 300); //start the video at 300ms
 		double numFrames = cap.get(CV_CAP_PROP_FRAME_COUNT);
 		double fps = cap.get(CV_CAP_PROP_FPS); //get the frames per seconds of the video
 
@@ -62,11 +62,11 @@ int main( int argc, const char** argv )
 	//Improvement: user enters boundaries of ROI or it is automatically detected
 	int subFrameXCoord = 45; 
 	int subFrameYCoord = 300; 
-	int subFrameWidth = 1014; 
+	int subFrameWidth = 1012; 
 	int subFrameHeight = 4;
 
 	//How far apart each note is
-	double individualNoteRes = subFrameWidth/84.0;
+	double individualNoteRes = subFrameWidth/80.0;
 
 	// Define the distance between clusters
     int euclidean_distance = 8;
