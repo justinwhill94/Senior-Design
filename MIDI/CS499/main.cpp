@@ -196,13 +196,10 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	string Fname = argv[1], Dname = argv[2];
-	bool quartet_mode = argv[3]; // determines whether in quartet mode
+	bool quartet_mode = stoi(argv[3]); // determines whether in quartet mode
 	// if in quartet mode, must have additional 4 arguments to specify the instruments
 	vector<int> instrument;
-	if (quartet_mode && argc < 8) {
-		return -1;
-	}
-	else {
+	if (quartet_mode) {
 		for (int i = 4; i < 8; i++) {
 			instrument.push_back(stoi(argv[i]));
 		}
