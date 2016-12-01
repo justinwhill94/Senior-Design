@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Media;
+using System.IO;
 
 namespace GUI_Project
 {
@@ -17,10 +18,7 @@ namespace GUI_Project
     
     public partial class MainGui : Form
     {
-
-        //[DllImport("C:\\Users\\Matthew\\Desktop\\UK\\Fall 2016\\Senior-Design-GUI\\GUI Project\\GUI Project\\CV\\MidiConverter.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        //stringpublic static extern int ParseFile(string Fname, string Dname);
-
+        public int instrument_mode = 0; //0 for single, 1 for quartet
         static void LaunchCV(string file_path)
         {
             
@@ -45,23 +43,23 @@ namespace GUI_Project
                 {
 
                     // Log error.
-                    MessageBox.Show("There was a problem with the MIDI generation", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("There was a problem with the Computer Vision", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                     //Need to end conversion and display an error MessageBox
                 }
 
         }
 
-        static void LaunchMIDI(string notes_file, string dest_file)
+        static void LaunchMIDI(string notes_file, string dest_file, int i_1, int i_2, int i_3, int i_4)
         {
-
+            
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.CreateNoWindow = false;
             startInfo.UseShellExecute = false;
             startInfo.FileName = "..\\..\\CV\\MidiConverter.exe";
             startInfo.CreateNoWindow = true;
             //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.Arguments = "\"" + notes_file + "\"" + " " + "\"" + dest_file + "\"";
+            startInfo.Arguments = "\"" + notes_file + "\"" + " " + "\"" + dest_file + "\""+ " 1 " + i_1 + ' ' + i_2 + ' ' + i_3 + ' ' + i_4 + " ";
             try
             {
 
@@ -76,7 +74,7 @@ namespace GUI_Project
             {
 
                 // Log error.
-                MessageBox.Show("There was a problem opening the file for conversion", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("There was a problem with the MIDI conversion", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
                 //Need to end conversion and display an error MessageBox
             }
@@ -87,13 +85,15 @@ namespace GUI_Project
             InitializeComponent();
             MainUIPanel.Visible = true;
 
-            CV_ProgressBar.MarqueeAnimationSpeed = 0;
+          
         }
 
         //list of file paths, both source and destination
         List<string> SourceFileNames = new List<string>();
         List<string> DestinationFileNames = new List<string>();
         List<string> DestinationFilePaths = new List<string>();
+        List<string> NewFilePaths = new List<string>();
+        
         string DestFolderName;
         //bools for remembering if a source/dest file were chosen  
         bool OpenPressed = false;
@@ -127,15 +127,11 @@ namespace GUI_Project
                     int begin = file.LastIndexOf('\\');
                     int end = file.LastIndexOf('.');
                     string dest_file = file.Substring(begin, end - begin + 1);
-                    dest_file += "midi";
+                    dest_file += "mid";
                     DestinationFileNames.Add(dest_file);
                 }
-                OpenPressed = true;
-                
-
-                
+                OpenPressed = true;      
             }
-           
         }
 
         private void DestOpenButton_Click(object sender, EventArgs e)
@@ -152,10 +148,9 @@ namespace GUI_Project
             }
 
         }
-
         private void RunButton_Click(object sender, EventArgs e)
         {
-            //Testmain(SourceFileNames[0]);
+            //if the user hasn't selected a source or destination file, display an error message
             if(!OpenPressed)
             {
                 
@@ -168,39 +163,95 @@ namespace GUI_Project
             }
             else
             {
-                /*CV_ProgressBar.Style = ProgressBarStyle.Marquee;
-                BackgroundWorker CV_BackgroundWorker = new BackgroundWorker();
-                CV_BackgroundWorker.DoWork += new DoWorkEventHandler(CV_BackgroundWorker_DoWork);
-                CV_BackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(CV_BackgroundWorker_RunWorkerCompleted);
-                CV_ProgressBar.Visible = true;*/
+                
                 foreach(string dest_file in DestinationFileNames)
                 {
                     string dest_path = DestFolderName  + dest_file;
                     DestinationFilePaths.Add(dest_path);
+                    NewFilePaths.Add(dest_path);
 
                 }
                 int index = 0;
+                
                 foreach(string file in SourceFileNames)
                 {
+                    string original_path = DestinationFilePaths[index];
                     Cursor.Current = Cursors.WaitCursor;
                     //Run the computer vision program
                     LaunchCV(file);
                     //Run the Midi generation program
-                    LaunchMIDI(".\\temporaryOutputFileForReading.txt", DestinationFilePaths[index]);
+                    int inst1, inst2, inst3, inst4;
+                    if (instrument_mode == 1)
+                    {
+                        inst1 = QuartetBox1.SelectedIndex;
+                        if (inst1 == 0)
+                            inst1 = 1;
+                        inst2 = QuartetBox2.SelectedIndex;
+                        if (inst2 == 0)
+                            inst2 = 1;
+                        inst3 = QuartetBox3.SelectedIndex;
+                        if (inst3 == 0)
+                            inst3 = 1;
+                        inst4 = QuartetBox4.SelectedIndex;
+                        if (inst4 == 0)
+                            inst4 = 1;
+                    }
+                    else
+                    {
+                        inst1 = SingleBox1.SelectedIndex;
+                        if (inst1 == 0)
+                            inst1 = 1;
+                        inst2 = inst1;
+                        inst3 = inst1;
+                        inst4 = inst1;        
+                    }
+                    /*bool file_name_exists = true;
+                    int i = 1;
+                    string file_str = DestinationFilePaths[index];
+                    while(file_name_exists)
+                    {      
+                        
+                        if(System.IO.File.Exists(file_str))
+                        {
+                            file_str = DestinationFilePaths[index].Substring(0, DestinationFilePaths[index].IndexOf(".mid")) + " (" + i + ").mid";
+                            i++;
+                        }
+                        else
+                        {
+                            file_name_exists = false;
+                        }
+                    }
+                     DestinationFilePaths[index] = file_str;*/
+                    //DestinationFilePaths[index] = MakeUnique(DestinationFilePaths[index]);
+                    int count = 1;
+                    string fullPath = DestinationFilePaths[index];
+                    string fileNameOnly = Path.GetFileNameWithoutExtension(fullPath);
+                    string extension = Path.GetExtension(fullPath);
+                    string path = Path.GetDirectoryName(fullPath);
+                    string newFullPath = fullPath;
+
+                    while (File.Exists(newFullPath))
+                    {
+                        string tempFileName = string.Format("{0}({1})", fileNameOnly, count++);
+                        newFullPath = Path.Combine(path, tempFileName + extension);
+                    }
+                    DestinationFilePaths[index] = newFullPath;
+                    LaunchMIDI(".\\temporaryOutputFileForReading.txt", DestinationFilePaths[index], inst1, inst2, inst3, inst4);
                     Cursor.Current = Cursors.Arrow;
 
                     //increment the index so we know which DestinationFilePath to use
+                    NewFilePaths[index] = DestinationFilePaths[index];
+                    DestinationFilePaths[index] = original_path;
                     index++;
                 }
-                //CV_ProgressBar.MarqueeAnimationSpeed = 0;
-                CV_ProgressBar.Hide();
+                
                 
             }
             //If the user wants video playback
             if(VideoPlaybackCheckBox.Checked)
             {
                 //create the playback form and fill the primary media player's playlist with the piano scroll videos
-                AudioVideoPlayback videoWindow = new AudioVideoPlayback(AudioPlaybackCheckBox.Checked, DestinationFilePaths);
+                AudioVideoPlayback videoWindow = new AudioVideoPlayback(AudioPlaybackCheckBox.Checked, NewFilePaths);
                 WMPLib.IWMPPlaylist playlist = videoWindow.axWindowsMediaPlayer1.playlistCollection.newPlaylist("PianoScrolls_Original");
                 WMPLib.IWMPMedia media;
                 foreach (string file in SourceFileNames)
@@ -211,13 +262,19 @@ namespace GUI_Project
                 videoWindow.axWindowsMediaPlayer1.currentPlaylist = playlist;
                 
                 videoWindow.ShowDialog();
+                videoWindow.axWindowsMediaPlayer1.Ctlcontrols.stop();
+                videoWindow.axWindowsMediaPlayerMidi.Ctlcontrols.stop();
+                videoWindow.Close();
             }
+            //If the user doesn't want video playback, but does want audio playback
+            //open up the playback form and play the midi audio file on the main media
+            //player.
             else if(AudioPlaybackCheckBox.Checked)
             {
-                AudioVideoPlayback videoWindow = new AudioVideoPlayback(AudioPlaybackCheckBox.Checked, DestinationFilePaths);
+                AudioVideoPlayback videoWindow = new AudioVideoPlayback(AudioPlaybackCheckBox.Checked, NewFilePaths);
                 WMPLib.IWMPPlaylist playlist = videoWindow.axWindowsMediaPlayer1.playlistCollection.newPlaylist("PianoScrolls_Midi");
                 WMPLib.IWMPMedia media;
-                foreach (string file in DestinationFilePaths)
+                foreach (string file in NewFilePaths)
                 {
                     media = videoWindow.axWindowsMediaPlayer1.newMedia(file);
                     playlist.appendItem(media);
@@ -225,11 +282,35 @@ namespace GUI_Project
                 videoWindow.axWindowsMediaPlayer1.currentPlaylist = playlist;
 
                 videoWindow.ShowDialog();
+                //videoWindow.axWindowsMediaPlayer1.Ctlcontrols.stop();
+                //videoWindow.axWindowsMediaPlayerMidi.Ctlcontrols.stop();
+                videoWindow.Close();
             }
-            //is this the proper way to end the program?
-            System.Windows.Forms.Application.Exit();
+            
+            
          
         }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            QuartetBox1.Enabled = true;
+            QuartetBox2.Enabled = true;
+            QuartetBox3.Enabled = true;
+            QuartetBox4.Enabled = true;
+            SingleBox1.Enabled = false;
+            instrument_mode = 1;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            QuartetBox1.Enabled = false;
+            QuartetBox2.Enabled = false;
+            QuartetBox3.Enabled = false;
+            QuartetBox4.Enabled = false;
+            SingleBox1.Enabled = true;
+            instrument_mode = 0;
+        }
+
 
     }
 }
