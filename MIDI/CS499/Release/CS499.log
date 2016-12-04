@@ -3,7 +3,9 @@ main.cpp(176): warning C4018: '<': signed/unsigned mismatch
 main.cpp(199): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
 main.cpp(227): warning C4018: '<': signed/unsigned mismatch
   Generating code
-  All 681 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  111 of 681 functions (16.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    8 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
 jdksmidi.lib(jdksmidi_file.obj) : warning LNK4099: PDB 'jdksmidi.pdb' was not found with 'jdksmidi.lib(jdksmidi_file.obj)' or at 'C:\Users\Joe\Documents\Class\CS 499\git\MIDI branch\Senior-Design\MIDI\Release\jdksmidi.pdb'; linking object as if no debug info
 jdksmidi.lib(jdksmidi_filewrite.obj) : warning LNK4099: PDB 'jdksmidi.pdb' was not found with 'jdksmidi.lib(jdksmidi_filewrite.obj)' or at 'C:\Users\Joe\Documents\Class\CS 499\git\MIDI branch\Senior-Design\MIDI\Release\jdksmidi.pdb'; linking object as if no debug info

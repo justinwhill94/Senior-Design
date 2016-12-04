@@ -75,7 +75,7 @@ void add_notes_to_midi(vector<MIDIClockTime>* &note_array, MIDITimedBigMessage &
 }
 
 int create_midi_file(vector<MIDIClockTime>* note_array, string Fname, bool quartet_mode, vector<int> instrument) {
-	int return_code = -1;
+	int return_code = -2;
 
 	MIDITimedBigMessage m; // the object for individual midi events
 	unsigned char chan, // internal midi channel number 0...15 (named 1...16)
