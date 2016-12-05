@@ -43,7 +43,7 @@ int main( int argc, const char** argv )
 
 	try{
 		//Used in debugging to play video 
-		bool playVideo = true;
+		bool playVideo = false;
 
 		//get file name (for use in GUI)
 		string filePath = argv[1];
@@ -62,14 +62,14 @@ int main( int argc, const char** argv )
 	//Improvement: user enters boundaries of ROI or it is automatically detected
 	int subFrameXCoord = 45; 
 	int subFrameYCoord = 300; 
-	int subFrameWidth = 1014; 
-	int subFrameHeight = 8;
+	int subFrameWidth = 1012; 
+	int subFrameHeight = 4;
 
 	//How far apart each note is
-	double individualNoteRes = subFrameWidth/84.0;
+	double individualNoteRes = subFrameWidth/80.0;
 
 	// Define the distance between clusters
-    int euclidean_distance = 6;
+    int euclidean_distance = 8;
 	//File where output vector is sent
 	ofstream noteFile("temporaryOutputFileForReading.txt");
 
@@ -150,7 +150,7 @@ int main( int argc, const char** argv )
 			//for (int i = 0; i < 84; ++i){
 				if(vectCtr <= n_labels){
 					//The note location on the piano is the rounded result of the x location of each centroid divided by the range of pixels for any note
-					int noteLoc = floor((centroids[vectCtr].x)/individualNoteRes +.5)+1;
+					int noteLoc = floor((centroids[vectCtr].x)/individualNoteRes);
 					outputNoteVec[noteLoc] = 1;
 					vectCtr++;
 					//There is a ~11.5 pixel zone in which each note might fall, so check to see if the x coordinate of the current cluster lies within this zone
