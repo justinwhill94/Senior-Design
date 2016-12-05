@@ -1,6 +1,6 @@
 /*
 
-Create Midifile  example for  libJDKSmidi C++ MIDI Library
+Derived from the Create Midifile  example for  libJDKSmidi C++ MIDI Library
 
 Copyright (C) 2010 V.R.Madgazin
 www.vmgames.com
@@ -44,31 +44,38 @@ using namespace jdksmidi;
 #include<list>
 using namespace std;
 
-void add_notes_to_midi(vector<MIDIClockTime>* &note_array, MIDITimedBigMessage &m, MIDIMultiTrack &tracks, int &trk, MIDIClockTime &t, unsigned char &chan, unsigned char &note, unsigned char &velocity, unsigned char &ctrl, unsigned char &val) {
+void add_notes_to_midi(vector<MIDIClockTime>* &note_array, MIDITimedBigMessage &m, MIDIMultiTrack &tracks, int &trk, MIDIClockTime &t, unsigned char &chan, unsigned char &note, unsigned char &velocity, unsigned char &ctrl, unsigned char &val, bool quartet_mode) {
 	// go through all the notes
 	MIDIClockTime on, off; // used to get the on/off times of each note from the input vector
+	int channel = 0; // used if quartet_mode is enabled to switch to other channels for different ranges of notes
 	for (int note_id = 0; note_id < 88; note_id++) { // loop through all the note pitches
+		// if quartet_mode
+		if (quartet_mode) {
+			if (note_id == 22) channel = 1;
+			if (note_id == 44) channel = 2;
+			if (note_id == 66) channel = 3;
+		};
 		for (unsigned int i = 1; i < note_array[note_id].size(); i += 2) { // loop through all the pairs of on/off times
 			on = note_array[note_id][i - 1]; // get the on time
 			off = note_array[note_id][i]; // get the off time
 
 			m.SetTime(on); // go to the on time
-			m.SetNoteOn(chan = 0, note = note_id, velocity = 100); // turn the note on
+			m.SetNoteOn(chan = channel, note = note_id, velocity = 100); // turn the note on
 			tracks.GetTrack(trk)->PutEvent(m); // put the on event
 
 			m.SetTime(off); // go to the off time 
-			m.SetNoteOff(chan = 0, note = note_id, velocity = 100); // turn the note off
+			m.SetNoteOff(chan = channel, note = note_id, velocity = 100); // turn the note off
 			tracks.GetTrack(trk)->PutEvent(m); // put the off event
 		}
 		// add a pause at the end of the track
 		m.SetTime(off + 100);
-		m.SetNoteOn(chan = 0, note = 0, velocity = 0);
+		m.SetNoteOn(chan = channel, note = 0, velocity = 0);
 		tracks.GetTrack(trk)->PutEvent(m);
 	}
 }
 
-int create_midi_file(vector<MIDIClockTime>* note_array, string Fname) {
-	int return_code = -1;
+int create_midi_file(vector<MIDIClockTime>* note_array, string Fname, bool quartet_mode, vector<int> instrument) {
+	int return_code = -2;
 
 	MIDITimedBigMessage m; // the object for individual midi events
 	unsigned char chan, // internal midi channel number 0...15 (named 1...16)
@@ -113,12 +120,19 @@ int create_midi_file(vector<MIDIClockTime>* note_array, string Fname) {
 	m.SetControlChange(chan = 0, ctrl = 0xA, val = 64); // channel 0 panorama = 0 at the center
 	tracks.GetTrack(trk)->PutEvent(m);
 
-	// we change musical instrument in channels 0-2
+	// if quartet mode, set 4 instruments
+	if (quartet_mode) {
+		for (int i = 0; i < 4; i++) {
+			m.SetProgramChange(chan = i, val = instrument[i]);
+			tracks.GetTrack(trk)->PutEvent(m);
+		}
+	}
+	else {
+		m.SetProgramChange(chan = 0, val = 0); // chan 0 instrument 0 - Piano
+		tracks.GetTrack(trk)->PutEvent(m);
+	}
 
-	m.SetProgramChange(chan = 0, val = 0); // channel 0 instrument 0 - Piano
-	tracks.GetTrack(trk)->PutEvent(m);
-
-	add_notes_to_midi(note_array, m, tracks, trk, t, chan, note, velocity, ctrl, val);
+	add_notes_to_midi(note_array, m, tracks, trk, t, chan, note, velocity, ctrl, val, quartet_mode);
 
 	// if events in any track recorded not in order of the growth of time,
 	tracks.SortEventsOrder(); // it is necessary to do this before write step
@@ -177,11 +191,19 @@ void logMidi(vector<MIDIClockTime> *note_array)
 
 int main(int argc, char* argv[])
 {
-	if (argc < 3)
+	if (argc < 4)
 	{
 		return -1;
 	}
 	string Fname = argv[1], Dname = argv[2];
+	bool quartet_mode = stoi(argv[3]); // determines whether in quartet mode
+	// if in quartet mode, must have additional 4 arguments to specify the instruments
+	vector<int> instrument;
+	if (quartet_mode) {
+		for (int i = 4; i < 8; i++) {
+			instrument.push_back(stoi(argv[i]));
+		}
+	}
 
 	vector<MIDIClockTime> NoteTimes[88];
 	
@@ -229,7 +251,7 @@ int main(int argc, char* argv[])
 		}
 		FrameNum++;
 	}
-	return create_midi_file(NoteTimes, Dname);
+	return create_midi_file(NoteTimes, Dname, quartet_mode, instrument);
 
 }
 

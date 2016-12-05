@@ -13,3 +13,18 @@ C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\
 C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\obj\Release\AxInterop.WMPLib.dll
 C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\obj\Release\GUI Project.csproj.ResolveComReference.cache
 C:\Users\Matthew\Desktop\UK\Fall 2016\Senior-Design-GUI\GUI Project\GUI Project\obj\Release\GUI_Project.AudioVideoPlayback.resources
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\bin\Release\GUI Project.exe.config
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\Interop.WMPLib.dll
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\AxInterop.WMPLib.dll
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\GUI Project.csproj.ResolveComReference.cache
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\GUI Project.exe
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\GUI Project.pdb
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\bin\Release\GUI Project.exe
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\bin\Release\GUI Project.pdb
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\bin\Release\Interop.WMPLib.dll
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\bin\Release\AxInterop.WMPLib.dll
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\GUI Project.csprojResolveAssemblyReference.cache
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\GUI_Project.MainGui.resources
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\GUI_Project.Properties.Resources.resources
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\GUI_Project.AudioVideoPlayback.resources
+C:\Users\Matthew\Desktop\GUI Project\GUI Project\obj\Release\GUI Project.csproj.GenerateResource.Cache
