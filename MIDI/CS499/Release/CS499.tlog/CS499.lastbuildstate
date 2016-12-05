@@ -1,2 +1,2 @@
-#TargetFrameworkVersion=v4.0:PlatformToolSet=v140:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit
-Release|Win32|C:\Users\coolh\Documents\CollegeFiles\2016 Fall\CS 499\Senior-Design\MIDI\|
+#TargetFrameworkVersion=v4.0:PlatformToolSet=v140:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit:WindowsTargetPlatformVersion=8.1
+Release|Win32|C:\Users\Joe\Documents\Class\CS 499\git\MIDI branch\Senior-Design\MIDI\|
